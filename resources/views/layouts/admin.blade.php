@@ -44,6 +44,66 @@
         .stats-card.danger {
             background: linear-gradient(135deg, #dc3545, #c82333);
         }
+        
+        /* ANCHOR: Custom Pagination Styling for Admin */
+        .pagination {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .pagination .page-item {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .pagination .page-link {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            margin-left: -1px;
+            line-height: 1.25;
+            color: #007bff;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            text-decoration: none;
+            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+        }
+        
+        .pagination .page-link:hover {
+            z-index: 2;
+            color: #0056b3;
+            background-color: #e9ecef;
+            border-color: #dee2e6;
+        }
+        
+        .pagination .page-item.active .page-link {
+            z-index: 3;
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        
+        .pagination .page-item.disabled .page-link {
+            color: #6c757d;
+            pointer-events: none;
+            background-color: #fff;
+            border-color: #dee2e6;
+        }
+        
+        .pagination * {
+            box-sizing: border-box;
+        }
+        
+        .pagination .page-link:focus {
+            z-index: 3;
+            color: #0056b3;
+            background-color: #e9ecef;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
     </style>
     
     @yield('styles')

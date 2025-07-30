@@ -57,7 +57,7 @@
 
                 <!-- Pagination -->
                 <div class="d-flex justify-content-center mt-4">
-                    {{ $news->links() }}
+                    {{ $news->links('vendor.pagination.custom') }}
                 </div>
             @else
                 <div class="text-center py-5">
