@@ -21,7 +21,7 @@
                     <div class="carousel-inner" style="height: 400px;">
                         @foreach($featuredNews as $index => $news)
                             <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                <img src="{{ $news->thumbnail ? asset('storage/' . $news->thumbnail) : 'https://via.placeholder.com/800x400?text=News+Image' }}" 
+                                <img src="{{ $news->thumbnail ? asset('storage/' . $news->thumbnail) : 'https://placehold.co/800x400?text=News+Image' }}" 
                                      class="d-block w-100" style="height: 400px; object-fit: cover;" alt="{{ $news->title }}">
                                 <div class="carousel-caption d-md-block">
                                     <a href="{{ route('news.category', $news->category->slug) }}" class="category-badge">
@@ -55,7 +55,7 @@
                 @forelse($latestNews as $news)
                     <div class="col-md-6 col-lg-4 mb-4">
                         <div class="card news-card h-100">
-                            <img src="{{ $news->thumbnail ? asset('storage/' . $news->thumbnail) : 'https://via.placeholder.com/300x200?text=News+Image' }}" 
+                            <img src="{{ $news->thumbnail ? asset('storage/' . $news->thumbnail) : 'https://placehold.co/300x200?text=News+Image' }}" 
                                  class="card-img-top news-thumbnail" alt="{{ $news->title }}">
                             <div class="card-body d-flex flex-column">
                                 <div class="mb-2">

@@ -29,7 +29,7 @@
                     @foreach($news as $article)
                         <div class="col-md-6 col-lg-4 mb-4">
                             <div class="card news-card h-100">
-                                <img src="{{ $article->thumbnail ? asset('storage/' . $article->thumbnail) : 'https://via.placeholder.com/300x200?text=News+Image' }}" 
+                                <img src="{{ $article->thumbnail ? asset('storage/' . $article->thumbnail) : 'https://placehold.co/300x200?text=News+Image' }}" 
                                      class="card-img-top news-thumbnail" alt="{{ $article->title }}">
                                 <div class="card-body d-flex flex-column">
                                     <div class="mb-2">

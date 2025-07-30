@@ -95,7 +95,7 @@
                         @foreach($relatedNews as $related)
                             <div class="col-md-6 mb-4">
                                 <div class="card news-card h-100">
-                                    <img src="{{ $related->thumbnail ? asset('storage/' . $related->thumbnail) : 'https://via.placeholder.com/300x200?text=News+Image' }}" 
+                                    <img src="{{ $related->thumbnail ? asset('storage/' . $related->thumbnail) : 'https://placehold.co/300x200?text=News+Image' }}" 
                                          class="card-img-top news-thumbnail" alt="{{ $related->title }}">
                                     <div class="card-body">
                                         <h5 class="card-title">
