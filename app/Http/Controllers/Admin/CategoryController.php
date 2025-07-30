@@ -46,17 +46,7 @@ class CategoryController extends Controller
             ->with('success', 'Category created successfully.');
     }
 
-    /**
-     * Display the specified category.
-     */
-    public function show(Category $category): View
-    {
-        $category->load(['news' => function($query) {
-            $query->latest()->take(10);
-        }]);
-        
-        return view('admin.categories.show', compact('category'));
-    }
+
 
     /**
      * Show the form for editing the specified category.

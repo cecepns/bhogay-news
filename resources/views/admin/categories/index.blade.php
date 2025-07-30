@@ -52,10 +52,6 @@
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <a href="{{ route('admin.categories.show', $category) }}" 
-                                               class="btn btn-sm btn-outline-info" title="View">
-                                                <i class="fas fa-eye"></i>
-                                            </a>
                                             <a href="{{ route('admin.categories.edit', $category) }}" 
                                                class="btn btn-sm btn-outline-primary" title="Edit">
                                                 <i class="fas fa-edit"></i>

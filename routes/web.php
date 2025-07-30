@@ -32,7 +32,7 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::resource('news', AdminNewsController::class);
     
     // Category Management
-    Route::resource('categories', AdminCategoryController::class);
+    Route::resource('categories', AdminCategoryController::class)->except(['show']);
     
     // Ads Management
     Route::resource('ads', AdminAdController::class);
