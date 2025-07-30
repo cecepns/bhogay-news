@@ -104,6 +104,41 @@
             outline: 0;
             box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
         }
+        
+        /* ANCHOR: Custom Trix Editor Styling */
+        trix-editor {
+            min-height: 400px !important;
+            max-height: 600px !important;
+            overflow-y: auto;
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+            padding: 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        
+        trix-editor:focus {
+            border-color: #86b7fe;
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        
+        trix-editor.is-invalid {
+            border-color: #dc3545;
+        }
+        
+        trix-editor.is-invalid:focus {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+        }
+        
+        /* Responsive height adjustments */
+        @media (max-width: 768px) {
+            trix-editor {
+                min-height: 300px !important;
+                max-height: 400px !important;
+            }
+        }
     </style>
     
     @yield('styles')
