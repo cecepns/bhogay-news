@@ -12,6 +12,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
+        /* ANCHOR: Layout and Content Styles */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        main {
+            flex: 1;
+            min-height: calc(100vh - 200px); /* Approximate header + footer height */
+        }
+        
         .news-card {
             transition: transform 0.2s;
             height: 100%;
