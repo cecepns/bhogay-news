@@ -95,32 +95,7 @@ class NewsController extends Controller
         ));
     }
 
-    /**
-     * Display news by category.
-     */
-    public function category(Request $request, string $slug): View
-    {
-        $category = Category::where('slug', $slug)->firstOrFail();
-        
-        $news = News::published()
-            ->with('category')
-            ->where('category_id', $category->id)
-            ->latest()
-            ->paginate(12);
 
-        // Get sidebar ads
-        $sidebarAds = Ad::active()->byPosition('sidebar')->get();
-        
-        // Get categories for navigation
-        $categories = Category::withCount('publishedNews')->get();
-
-        return view('public.news.category', compact(
-            'category',
-            'news',
-            'categories',
-            'sidebarAds'
-        ));
-    }
 
     /**
      * Track page view for analytics.

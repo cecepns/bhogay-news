@@ -13,7 +13,6 @@ use App\Http\Controllers\Public\NewsController as PublicNewsController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/news', [PublicNewsController::class, 'index'])->name('news.index');
 Route::get('/news/{slug}', [PublicNewsController::class, 'show'])->name('news.show');
-Route::get('/category/{slug}', [PublicNewsController::class, 'category'])->name('news.category');
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {

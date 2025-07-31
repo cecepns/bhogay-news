@@ -1,7 +1,7 @@
 @extends('layouts.public')
 
-@section('title', 'All News - News Portal')
-@section('description', 'Browse all the latest news and updates')
+@section('title', request('category') ? ($categories->where('slug', request('category'))->first()?->name ?? 'Category') . ' - News Portal' : 'All News - News Portal')
+@section('description', request('category') ? 'Browse all ' . ($categories->where('slug', request('category'))->first()?->name ?? 'Category') . ' news and updates' : 'Browse all the latest news and updates')
 
 @section('content')
 <div class="container">
@@ -9,7 +9,19 @@
         <!-- Main Content -->
         <div class="col-lg-9">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1>All News</h1>
+                <div>
+                    @if(request('category'))
+                        @php
+                            $currentCategory = $categories->where('slug', request('category'))->first();
+                        @endphp
+                        <h1>{{ $currentCategory ? $currentCategory->name : 'Category' }}</h1>
+                        @if($currentCategory && $currentCategory->description)
+                            <p class="text-muted">{{ $currentCategory->description }}</p>
+                        @endif
+                    @else
+                        <h1>All News</h1>
+                    @endif
+                </div>
                 <div class="text-muted">
                     {{ $news->total() }} articles found
                 </div>
@@ -28,28 +40,28 @@
                 <div class="row">
                     @foreach($news as $article)
                         <div class="col-md-6 col-lg-4 mb-4">
-                            <div class="card news-card h-100">
-                                <img src="{{ $article->thumbnail ? asset('storage/' . $article->thumbnail) : 'https://placehold.co/300x200?text=News+Image' }}" 
-                                     class="card-img-top news-thumbnail" alt="{{ $article->title }}">
-                                <div class="card-body d-flex flex-column">
-                                    <div class="mb-2">
-                                        <a href="{{ route('news.category', $article->category->slug) }}" class="category-badge">
-                                            {{ $article->category->name }}
-                                        </a>
-                                    </div>
-                                    <h5 class="card-title">
-                                        <a href="{{ route('news.show', $article->slug) }}" class="text-decoration-none text-dark">
+                            <div class="card news-card h-100 position-relative">
+                                <a href="{{ route('news.show', $article->slug) }}" class="text-decoration-none text-dark stretched-link">
+                                    <img src="{{ $article->thumbnail ? asset('storage/' . $article->thumbnail) : 'https://placehold.co/300x200?text=News+Image' }}" 
+                                         class="card-img-top news-thumbnail" alt="{{ $article->title }}">
+                                    <div class="card-body d-flex flex-column">
+                                        <div class="mb-2">
+                                            <span class="category-badge">
+                                                {{ $article->category->name }}
+                                            </span>
+                                        </div>
+                                        <h5 class="card-title">
                                             {{ $article->title }}
-                                        </a>
-                                    </h5>
-                                    <p class="card-text flex-grow-1">{{ Str::limit(strip_tags($article->content), 120) }}</p>
-                                    <div class="news-meta">
-                                        <small>
-                                            <i class="fas fa-calendar"></i> {{ $article->created_at->format('M d, Y') }}
-                                            <i class="fas fa-eye ms-2"></i> {{ number_format($article->views) }} views
-                                        </small>
+                                        </h5>
+                                        <p class="card-text flex-grow-1">{{ Str::limit(strip_tags($article->content), 120) }}</p>
+                                        <div class="news-meta">
+                                            <small>
+                                                <i class="fas fa-calendar"></i> {{ $article->created_at->format('M d, Y') }}
+                                                <i class="fas fa-eye ms-2"></i> {{ number_format($article->views) }} views
+                                            </small>
+                                        </div>
                                     </div>
-                                </div>
+                                </a>
                             </div>
                         </div>
                     @endforeach
@@ -62,9 +74,20 @@
             @else
                 <div class="text-center py-5">
                     <i class="fas fa-newspaper fa-3x text-muted mb-3"></i>
-                    <h4 class="text-muted">No news articles found</h4>
+                    <h4 class="text-muted">
+                        @if(request('category'))
+                            No news articles found in {{ $categories->where('slug', request('category'))->first()?->name ?? 'this category' }}
+                        @else
+                            No news articles found
+                        @endif
+                    </h4>
                     @if(request('search'))
                         <p class="text-muted">Try adjusting your search terms or browse all categories.</p>
+                    @elseif(request('category'))
+                        <p class="text-muted">Check back later for the latest updates in this category.</p>
+                        <a href="{{ route('news.index') }}" class="btn btn-primary">
+                            <i class="fas fa-arrow-left"></i> Browse All News
+                        </a>
                     @else
                         <p class="text-muted">Check back later for the latest updates.</p>
                     @endif

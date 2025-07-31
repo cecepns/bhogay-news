@@ -16,7 +16,7 @@ class CategoryController extends Controller
      */
     public function index(): View
     {
-        $categories = Category::withCount('news')->paginate(15);
+        $categories = Category::withCount('news')->orderByDesc('created_at')->paginate(15);
         return view('admin.categories.index', compact('categories'));
     }
 

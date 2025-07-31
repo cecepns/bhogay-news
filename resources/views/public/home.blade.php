@@ -24,7 +24,7 @@
                                 <img src="{{ $news->thumbnail ? asset('storage/' . $news->thumbnail) : 'https://placehold.co/800x400?text=News+Image' }}" 
                                      class="d-block w-100" style="height: 400px; object-fit: cover;" alt="{{ $news->title }}">
                                 <div class="carousel-caption d-md-block">
-                                    <a href="{{ route('news.category', $news->category->slug) }}" class="category-badge">
+                                    <a href="{{ route('news.index', ['category' => $news->category->slug]) }}" class="category-badge">
                                         {{ $news->category->name }}
                                     </a>
                                     <h4 class="mt-2">{{ $news->title }}</h4>
@@ -54,28 +54,28 @@
                 
                 @forelse($latestNews as $news)
                     <div class="col-md-6 col-lg-4 mb-4">
-                        <div class="card news-card h-100">
-                            <img src="{{ $news->thumbnail ? asset('storage/' . $news->thumbnail) : 'https://placehold.co/300x200?text=News+Image' }}" 
-                                 class="card-img-top news-thumbnail" alt="{{ $news->title }}">
-                            <div class="card-body d-flex flex-column">
-                                <div class="mb-2">
-                                    <a href="{{ route('news.category', $news->category->slug) }}" class="category-badge">
-                                        {{ $news->category->name }}
-                                    </a>
-                                </div>
-                                <h5 class="card-title">
-                                    <a href="{{ route('news.show', $news->slug) }}" class="text-decoration-none text-dark">
+                        <div class="card news-card h-100 position-relative">
+                            <a href="{{ route('news.show', $news->slug) }}" class="text-decoration-none text-dark stretched-link">
+                                <img src="{{ $news->thumbnail ? asset('storage/' . $news->thumbnail) : 'https://placehold.co/300x200?text=News+Image' }}" 
+                                     class="card-img-top news-thumbnail" alt="{{ $news->title }}">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="mb-2">
+                                        <span class="category-badge">
+                                            {{ $news->category->name }}
+                                        </span>
+                                    </div>
+                                    <h5 class="card-title">
                                         {{ $news->title }}
-                                    </a>
-                                </h5>
-                                <p class="card-text flex-grow-1">{{ Str::limit(strip_tags($news->content), 120) }}</p>
-                                <div class="news-meta">
-                                    <small>
-                                        <i class="fas fa-calendar"></i> {{ $news->created_at->format('M d, Y') }}
-                                        <i class="fas fa-eye ms-2"></i> {{ number_format($news->views) }} views
-                                    </small>
+                                    </h5>
+                                    <p class="card-text flex-grow-1">{{ Str::limit(strip_tags($news->content), 120) }}</p>
+                                    <div class="news-meta">
+                                        <small>
+                                            <i class="fas fa-calendar"></i> {{ $news->created_at->format('M d, Y') }}
+                                            <i class="fas fa-eye ms-2"></i> {{ number_format($news->views) }} views
+                                        </small>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 @empty
@@ -151,7 +151,7 @@
                     <div class="card-body">
                         @foreach($categories as $category)
                             <div class="d-flex justify-content-between align-items-center mb-2">
-                                <a href="{{ route('news.category', $category->slug) }}" class="text-decoration-none">
+                                <a href="{{ route('news.index', ['category' => $category->slug]) }}" class="text-decoration-none">
                                     {{ $category->name }}
                                 </a>
                                 <span class="badge bg-light text-dark">{{ $category->published_news_count }}</span>

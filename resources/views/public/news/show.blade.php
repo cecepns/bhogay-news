@@ -26,7 +26,7 @@
                     <!-- Article Header -->
                     <div class="mb-4">
                         <div class="mb-3">
-                            <a href="{{ route('news.category', $news->category->slug) }}" class="category-badge">
+                            <a href="{{ route('news.index', ['category' => $news->category->slug]) }}" class="category-badge">
                                 {{ $news->category->name }}
                             </a>
                         </div>
@@ -94,23 +94,23 @@
                     <div class="row">
                         @foreach($relatedNews as $related)
                             <div class="col-md-6 mb-4">
-                                <div class="card news-card h-100">
-                                    <img src="{{ $related->thumbnail ? asset('storage/' . $related->thumbnail) : 'https://placehold.co/300x200?text=News+Image' }}" 
-                                         class="card-img-top news-thumbnail" alt="{{ $related->title }}">
-                                    <div class="card-body">
-                                        <h5 class="card-title">
-                                            <a href="{{ route('news.show', $related->slug) }}" class="text-decoration-none text-dark">
+                                <div class="card news-card h-100 position-relative">
+                                    <a href="{{ route('news.show', $related->slug) }}" class="text-decoration-none text-dark stretched-link">
+                                        <img src="{{ $related->thumbnail ? asset('storage/' . $related->thumbnail) : 'https://placehold.co/300x200?text=News+Image' }}" 
+                                             class="card-img-top news-thumbnail" alt="{{ $related->title }}">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
                                                 {{ $related->title }}
-                                            </a>
-                                        </h5>
-                                        <p class="card-text">{{ Str::limit(strip_tags($related->content), 120) }}</p>
-                                        <div class="news-meta">
-                                            <small>
-                                                <i class="fas fa-calendar"></i> {{ $related->created_at->format('M d, Y') }}
-                                                <i class="fas fa-eye ms-2"></i> {{ number_format($related->views) }} views
-                                            </small>
+                                            </h5>
+                                            <p class="card-text">{{ Str::limit(strip_tags($related->content), 120) }}</p>
+                                            <div class="news-meta">
+                                                <small>
+                                                    <i class="fas fa-calendar"></i> {{ $related->created_at->format('M d, Y') }}
+                                                    <i class="fas fa-eye ms-2"></i> {{ number_format($related->views) }} views
+                                                </small>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                         @endforeach

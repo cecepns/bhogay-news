@@ -66,7 +66,12 @@
                                                     </button>
                                                 </form>
                                             @else
-                                                <button class="btn btn-sm btn-outline-secondary" disabled title="Cannot delete - has articles">
+                                                <button 
+                                                    class="btn btn-sm btn-outline-secondary" 
+                                                    data-bs-toggle="tooltip" 
+                                                    data-bs-placement="top" 
+                                                    title="Cannot delete this category because it contains articles."
+                                                    style="cursor: not-allowed;">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             @endif

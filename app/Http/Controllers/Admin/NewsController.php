@@ -16,11 +16,20 @@ class NewsController extends Controller
     /**
      * Display a listing of the news.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $news = News::with('category')
-            ->latest()
-            ->paginate(15);
+        $query = News::with('category')->latest();
+
+        // Handle search
+        if ($request->has('search') && $request->search) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('content', 'like', "%{$search}%");
+            });
+        }
+
+        $news = $query->paginate(15);
 
         return view('admin.news.index', compact('news'));
     }
