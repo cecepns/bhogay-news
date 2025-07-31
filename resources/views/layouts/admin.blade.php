@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Admin Dashboard') - News Portal</title>
     
     <!-- Bootstrap CSS -->
@@ -12,134 +13,8 @@
     
     <!-- Trix Editor CSS -->
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.0/dist/trix.css">
-    
-    <style>
-        .sidebar {
-            min-height: 100vh;
-            background: #343a40;
-        }
-        .sidebar .nav-link {
-            color: #adb5bd;
-            padding: 10px 20px;
-        }
-        .sidebar .nav-link:hover,
-        .sidebar .nav-link.active {
-            color: #fff;
-            background-color: #495057;
-        }
-        .main-content {
-            min-height: 100vh;
-        }
-        .stats-card {
-            background: linear-gradient(135deg, #007bff, #0056b3);
-            color: white;
-            border-radius: 15px;
-        }
-        .stats-card.success {
-            background: linear-gradient(135deg, #28a745, #1e7e34);
-        }
-        .stats-card.warning {
-            background: linear-gradient(135deg, #ffc107, #e0a800);
-        }
-        .stats-card.danger {
-            background: linear-gradient(135deg, #dc3545, #c82333);
-        }
-        
-        /* ANCHOR: Custom Pagination Styling for Admin */
-        .pagination {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-        
-        .pagination .page-item {
-            margin: 0;
-            padding: 0;
-        }
-        
-        .pagination .page-link {
-            display: block;
-            padding: 0.5rem 0.75rem;
-            margin-left: -1px;
-            line-height: 1.25;
-            color: #007bff;
-            background-color: #fff;
-            border: 1px solid #dee2e6;
-            text-decoration: none;
-            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
-        }
-        
-        .pagination .page-link:hover {
-            z-index: 2;
-            color: #0056b3;
-            background-color: #e9ecef;
-            border-color: #dee2e6;
-        }
-        
-        .pagination .page-item.active .page-link {
-            z-index: 3;
-            color: #fff;
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-        
-        .pagination .page-item.disabled .page-link {
-            color: #6c757d;
-            pointer-events: none;
-            background-color: #fff;
-            border-color: #dee2e6;
-        }
-        
-        .pagination * {
-            box-sizing: border-box;
-        }
-        
-        .pagination .page-link:focus {
-            z-index: 3;
-            color: #0056b3;
-            background-color: #e9ecef;
-            outline: 0;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-        }
-        
-        /* ANCHOR: Custom Trix Editor Styling */
-        trix-editor {
-            min-height: 400px !important;
-            max-height: 600px !important;
-            overflow-y: auto;
-            border: 1px solid #ced4da;
-            border-radius: 0.375rem;
-            padding: 0.75rem;
-            font-size: 1rem;
-            line-height: 1.5;
-        }
-        
-        trix-editor:focus {
-            border-color: #86b7fe;
-            outline: 0;
-            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-        }
-        
-        trix-editor.is-invalid {
-            border-color: #dc3545;
-        }
-        
-        trix-editor.is-invalid:focus {
-            border-color: #dc3545;
-            box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
-        }
-        
-        /* Responsive height adjustments */
-        @media (max-width: 768px) {
-            trix-editor {
-                min-height: 300px !important;
-                max-height: 400px !important;
-            }
-        }
-    </style>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     
     @yield('styles')
 </head>
@@ -242,6 +117,78 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Trix Editor JS -->
     <script type="text/javascript" src="https://unpkg.com/trix@2.0.0/dist/trix.umd.min.js"></script>
+    
+    <!-- ANCHOR: Trix Attachment Handler -->
+    <script>
+        document.addEventListener('trix-attachment-add', function(event) {
+            const attachment = event.attachment;
+            const file = attachment.file;
+            
+            // Check if file is an image
+            if (!file || !file.type.startsWith('image/')) {
+                attachment.remove();
+                alert('Only image files are allowed!');
+                return;
+            }
+            
+            // Check file size (2MB limit)
+            const maxSize = 2 * 1024 * 1024; // 2MB in bytes
+            if (file.size > maxSize) {
+                attachment.remove();
+                alert('File size must be less than 2MB!');
+                return;
+            }
+            
+            // Upload the file
+            const formData = new FormData();
+            formData.append('attachment', file);
+            formData.append('_token', document.querySelector('meta[name="csrf-token"]')?.content || 
+                                     document.querySelector('input[name="_token"]')?.value);
+            
+            fetch('{{ route("admin.trix.attachment") }}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    attachment.remove();
+                    alert('Upload failed: ' + data.error);
+                } else {
+                    attachment.setAttributes({
+                        url: data.attachment.url,
+                        href: data.attachment.url,
+                        filename: data.attachment.filename,
+                        filesize: data.attachment.filesize,
+                        contentType: data.attachment.content_type
+                    });
+                }
+            })
+            .catch(error => {
+                attachment.remove();
+                console.error('Upload error:', error);
+                alert('Upload failed. Please try again.');
+            });
+        });
+        
+        // Handle attachment removal
+        document.addEventListener('trix-attachment-remove', function(event) {
+            // Optional: You could add logic here to delete the file from server
+            console.log('Attachment removed:', event.attachment);
+        });
+        
+        // Disable file attachments that are not images
+        document.addEventListener('trix-file-accept', function(event) {
+            const file = event.file;
+            if (!file.type.startsWith('image/')) {
+                event.preventDefault();
+                alert('Only image files are allowed!');
+            }
+        });
+    </script>
     
     @yield('scripts')
 </body>

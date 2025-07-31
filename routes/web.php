@@ -30,6 +30,7 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     
     // News Management
     Route::resource('news', AdminNewsController::class);
+    Route::post('/trix-attachment', [AdminNewsController::class, 'uploadTrixAttachment'])->name('trix.attachment');
     
     // Category Management
     Route::resource('categories', AdminCategoryController::class)->except(['show']);

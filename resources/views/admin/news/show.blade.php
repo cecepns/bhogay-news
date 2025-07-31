@@ -50,7 +50,7 @@
                     <!-- Content -->
                     <div class="mb-4">
                         <h5>Content</h5>
-                        <div class="border rounded p-3 bg-light">
+                        <div id="news-content-wrapper" class="border rounded p-3 bg-light">
                             {!! $news->content !!}
                         </div>
                     </div>

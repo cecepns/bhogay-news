@@ -60,7 +60,7 @@
                     @endif
 
                     <!-- Article Content -->
-                    <div class="news-content">
+                    <div id="news-content-wrapper" class="news-content">
                         {!! $news->content !!}
                     </div>
 

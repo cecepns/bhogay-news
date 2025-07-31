@@ -123,4 +123,38 @@ class NewsController extends Controller
         return redirect()->route('admin.news.index')
             ->with('success', 'News deleted successfully.');
     }
+
+    /**
+     * Handle Trix Editor attachment upload.
+     */
+    public function uploadTrixAttachment(Request $request)
+    {
+        $request->validate([
+            'attachment' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
+        ]);
+
+        try {
+            // Store the attachment
+            $path = $request->file('attachment')->store('trix-attachments', 'public');
+            
+            // Get file info
+            $file = $request->file('attachment');
+            $filename = $file->getClientOriginalName();
+            $filesize = $file->getSize();
+            $url = asset('storage/' . $path);
+
+            return response()->json([
+                'attachment' => [
+                    'url' => $url,
+                    'filename' => $filename,
+                    'filesize' => $filesize,
+                    'content_type' => $file->getMimeType()
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to upload attachment: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }
