@@ -14,9 +14,22 @@ class AdController extends Controller
     /**
      * Display a listing of the ads.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $ads = Ad::latest()->paginate(15);
+        $query = Ad::latest();
+
+        // Handle search
+        if ($request->has('search') && $request->search) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('position', 'like', "%{$search}%")
+                  ->orWhere('size', 'like', "%{$search}%");
+            });
+        }
+
+        $ads = $query->paginate(15);
+
         return view('admin.ads.index', compact('ads'));
     }
 
