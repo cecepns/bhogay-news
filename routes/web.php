@@ -15,6 +15,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/homev2', [HomeController::class, 'indexV2'])->name('homev2');
 Route::get('/news', [PublicNewsController::class, 'index'])->name('news.index');
 Route::get('/news/{slug}', [PublicNewsController::class, 'show'])->name('news.show');
+Route::get('/tag/{tag:slug}', [PublicNewsController::class, 'byTag'])->name('news.byTag');
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {

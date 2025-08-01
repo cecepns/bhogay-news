@@ -1,7 +1,7 @@
 @extends('layouts.public')
 
-@section('title', request('category') ? ($categories->where('slug', request('category'))->first()?->name ?? 'Category') . ' - News Portal' : 'All News - News Portal')
-@section('description', request('category') ? 'Browse all ' . ($categories->where('slug', request('category'))->first()?->name ?? 'Category') . ' news and updates' : 'Browse all the latest news and updates')
+@section('title', isset($tag) ? $tag->name . ' - News Portal' : (request('category') ? ($categories->where('slug', request('category'))->first()?->name ?? 'Category') . ' - News Portal' : 'All News - News Portal'))
+@section('description', isset($tag) ? 'Browse all ' . $tag->name . ' news and updates' : (request('category') ? 'Browse all ' . ($categories->where('slug', request('category'))->first()?->name ?? 'Category') . ' news and updates' : 'Browse all the latest news and updates'))
 
 @section('content')
 <div class="container">
@@ -10,7 +10,10 @@
         <div class="col-lg-9">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    @if(request('category'))
+                    @if(isset($tag))
+                        <h1>{{ $tag->name }}</h1>
+                        <p class="text-muted">Browse all news tagged with "{{ $tag->name }}"</p>
+                    @elseif(request('category'))
                         @php
                             $currentCategory = $categories->where('slug', request('category'))->first();
                         @endphp
@@ -32,6 +35,14 @@
                 <div class="alert alert-info mb-4">
                     <i class="fas fa-search"></i> Search results for: <strong>"{{ request('search') }}"</strong>
                     <a href="{{ route('news.index') }}" class="btn btn-sm btn-outline-primary ms-2">Clear</a>
+                </div>
+            @endif
+
+            <!-- Tag Results -->
+            @if(isset($tag))
+                <div class="alert alert-info mb-4">
+                    <i class="fas fa-tag"></i> Showing news tagged with: <strong>"{{ $tag->name }}"</strong>
+                    <a href="{{ route('news.index') }}" class="btn btn-sm btn-outline-primary ms-2">View All News</a>
                 </div>
             @endif
 
@@ -75,13 +86,20 @@
                 <div class="text-center py-5">
                     <i class="fas fa-newspaper fa-3x text-muted mb-3"></i>
                     <h4 class="text-muted">
-                        @if(request('category'))
+                        @if(isset($tag))
+                            No news articles found with tag "{{ $tag->name }}"
+                        @elseif(request('category'))
                             No news articles found in {{ $categories->where('slug', request('category'))->first()?->name ?? 'this category' }}
                         @else
                             No news articles found
                         @endif
                     </h4>
-                    @if(request('search'))
+                    @if(isset($tag))
+                        <p class="text-muted">Check back later for news tagged with "{{ $tag->name }}".</p>
+                        <a href="{{ route('news.index') }}" class="btn btn-primary">
+                            <i class="fas fa-arrow-left"></i> Browse All News
+                        </a>
+                    @elseif(request('search'))
                         <p class="text-muted">Try adjusting your search terms or browse all categories.</p>
                     @elseif(request('category'))
                         <p class="text-muted">Check back later for the latest updates in this category.</p>

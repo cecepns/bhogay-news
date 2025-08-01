@@ -34,7 +34,7 @@
 			<div class="wrap-header-mobile">
 				<!-- Logo moblie -->		
 				<div class="logo-mobile">
-					<a href="index.html"><img src="images/icons/logo-01.png" alt="IMG-LOGO"></a>
+					<a href="index.html"><img src="images/logo.png" alt="IMG-LOGO"></a>
 				</div>
 
 				<!-- Button show menu -->
@@ -110,7 +110,7 @@
 			<div class="wrap-logo container">
 				<!-- Logo desktop -->		
 				<div class="logo">
-					<a href="index.html"><img src="images/icons/logo-01.png" alt="LOGO"></a>
+					<a href="index.html"><img src="images/logo.png" alt="LOGO"></a>
 				</div>	
 
 				<!-- Banner -->
@@ -125,7 +125,7 @@
 					<!-- Menu desktop -->
 					<nav class="menu-desktop">
 						<a class="logo-stick" href="index.html">
-							<img src="images/icons/logo-01.png" alt="LOGO">
+							<img src="images/logo.png" alt="LOGO">
 						</a>
 
 						<ul class="main-menu">
@@ -2163,47 +2163,22 @@
     @yield('content')
 
 	<!-- Footer -->
+	@yield('footer')
 	<footer>
 		<div class="bg2 p-t-40 p-b-25">
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-4 p-b-20">
 						<div class="size-h-3 flex-s-c">
-							<a href="index.html">
-								<img class="max-s-full" src="images/icons/logo-02.png" alt="LOGO">
+							<a href="{{ route('home') }}">
+								<img class="max-s-full" src="images/logo-white.png" alt="LOGO">
 							</a>
 						</div>
 
 						<div>
 							<p class="f1-s-1 cl11 p-b-16">
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tempor magna eget elit efficitur, at accumsan sem placerat. Nulla tellus libero, mattis nec molestie at, facilisis ut turpis. Vestibulum dolor metus, tincidunt eget odio
+								Bhogay News is your trusted source for the latest news, insightful articles, and trending stories from around the world. Stay informed with our up-to-date coverage and in-depth analysis on topics that matter to you.
 							</p>
-
-							<p class="f1-s-1 cl11 p-b-16">
-								Any questions? Call us on (+1) 96 716 6879
-							</p>
-
-							<div class="p-t-15">
-								<a href="#" class="fs-18 cl11 hov-cl10 trans-03 m-r-8">
-									<span class="fab fa-facebook-f"></span>
-								</a>
-
-								<a href="#" class="fs-18 cl11 hov-cl10 trans-03 m-r-8">
-									<span class="fab fa-twitter"></span>
-								</a>
-
-								<a href="#" class="fs-18 cl11 hov-cl10 trans-03 m-r-8">
-									<span class="fab fa-pinterest-p"></span>
-								</a>
-
-								<a href="#" class="fs-18 cl11 hov-cl10 trans-03 m-r-8">
-									<span class="fab fa-vimeo-v"></span>
-								</a>
-
-								<a href="#" class="fs-18 cl11 hov-cl10 trans-03 m-r-8">
-									<span class="fab fa-youtube"></span>
-								</a>
-							</div>
 						</div>
 					</div>
 
@@ -2215,59 +2190,33 @@
 						</div>
 
 						<ul>
-							<li class="flex-wr-sb-s p-b-20">
-								<a href="#" class="size-w-4 wrap-pic-w hov1 trans-03">
-									<img src="images/popular-post-01.jpg" alt="IMG">
-								</a>
-
-								<div class="size-w-5">
-									<h6 class="p-b-5">
-										<a href="#" class="f1-s-5 cl11 hov-cl10 trans-03">
-											Donec metus orci, malesuada et lectus vitae
+							@if(isset($mostViewedNewsFooter) && $mostViewedNewsFooter->count() > 0)
+								@foreach($mostViewedNewsFooter as $news)
+									<li class="flex-wr-sb-s p-b-20">
+										<a href="{{ route('news.show', $news->slug) }}" class="size-w-4 wrap-pic-w hov1 trans-03">
+											<img src="{{ $news->thumbnail ? asset('storage/' . $news->thumbnail) : 'https://placehold.co/100x100/E8E8E8/A7A6A6.png?text=News' }}" alt="{{ $news->title }}">
 										</a>
-									</h6>
 
-									<span class="f1-s-3 cl6">
-										Feb 17
-									</span>
-								</div>
-							</li>
+										<div class="size-w-5">
+											<h6 class="p-b-5">
+												<a href="{{ route('news.show', $news->slug) }}" class="f1-s-5 cl11 hov-cl10 trans-03">
+													{{ Str::limit($news->title, 50) }}
+												</a>
+											</h6>
 
-							<li class="flex-wr-sb-s p-b-20">
-								<a href="#" class="size-w-4 wrap-pic-w hov1 trans-03">
-									<img src="images/popular-post-02.jpg" alt="IMG">
-								</a>
-
-								<div class="size-w-5">
-									<h6 class="p-b-5">
-										<a href="#" class="f1-s-5 cl11 hov-cl10 trans-03">
-											Lorem ipsum dolor sit amet, consectetur
-										</a>
-									</h6>
-
-									<span class="f1-s-3 cl6">
-										Feb 16
-									</span>
-								</div>
-							</li>
-
-							<li class="flex-wr-sb-s p-b-20">
-								<a href="#" class="size-w-4 wrap-pic-w hov1 trans-03">
-									<img src="images/popular-post-03.jpg" alt="IMG">
-								</a>
-
-								<div class="size-w-5">
-									<h6 class="p-b-5">
-										<a href="#" class="f1-s-5 cl11 hov-cl10 trans-03">
-											Suspendisse dictum enim quis imperdiet auctor
-										</a>
-									</h6>
-
-									<span class="f1-s-3 cl6">
-										Feb 15
-									</span>
-								</div>
-							</li>
+											<span class="f1-s-3 cl6">
+												{{ $news->created_at->format('M d') }}
+											</span>
+										</div>
+									</li>
+								@endforeach
+							@else
+								<li class="flex-wr-sb-s p-b-20">
+									<div class="size-w-5">
+										<span class="f1-s-3 cl6">No popular posts available</span>
+									</div>
+								</li>
+							@endif
 						</ul>
 					</div>
 
@@ -2279,35 +2228,19 @@
 						</div>
 
 						<ul class="m-t--12">
-							<li class="how-bor1 p-rl-5 p-tb-10">
-								<a href="#" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
-									Fashion (22)
-								</a>
-							</li>
-
-							<li class="how-bor1 p-rl-5 p-tb-10">
-								<a href="#" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
-									Technology (29)
-								</a>
-							</li>
-
-							<li class="how-bor1 p-rl-5 p-tb-10">
-								<a href="#" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
-									Street Style (15)
-								</a>
-							</li>
-
-							<li class="how-bor1 p-rl-5 p-tb-10">
-								<a href="#" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
-									Life Style (28)
-								</a>
-							</li>
-
-							<li class="how-bor1 p-rl-5 p-tb-10">
-								<a href="#" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
-									DIY & Crafts (16)
-								</a>
-							</li>
+							@if(isset($categoriesFooter) && $categoriesFooter->count() > 0)
+								@foreach($categoriesFooter as $category)
+									<li class="how-bor1 p-rl-5 p-tb-10">
+										<a href="{{ route('news.index', ['category' => $category->slug]) }}" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
+											{{ $category->name }} ({{ $category->published_news_count }})
+										</a>
+									</li>
+								@endforeach
+							@else
+								<li class="how-bor1 p-rl-5 p-tb-10">
+									<span class="f1-s-5 cl11 p-tb-8">No categories available</span>
+								</li>
+							@endif
 						</ul>
 					</div>
 				</div>
@@ -2332,19 +2265,6 @@
 		<span class="symbol-btn-back-to-top">
 			<span class="fas fa-angle-up"></span>
 		</span>
-	</div>
-
-	<!-- Modal Video 01-->
-	<div class="modal fade" id="modal-video-01" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog" role="document" data-dismiss="modal">
-			<div class="close-mo-video-01 trans-0-4" data-dismiss="modal" aria-label="Close">&times;</div>
-
-			<div class="wrap-video-mo-01">
-				<div class="video-mo-01">
-					<iframe src="https://www.youtube.com/embed/wJnBTPUQS5A?rel=0" allowfullscreen></iframe>
-				</div>
-			</div>
-		</div>
 	</div>
 
 <!--===============================================================================================-->	

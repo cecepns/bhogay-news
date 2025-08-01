@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Public;
 use App\Http\Controllers\Controller;
 use App\Models\News;
 use App\Models\Category;
+use App\Models\Tag;
 use App\Models\Ad;
 use App\Models\PageView;
 use Illuminate\Http\Request;
@@ -95,7 +96,44 @@ class NewsController extends Controller
         ));
     }
 
+    /**
+     * Display news by tag.
+     */
+    public function byTag(Request $request, Tag $tag): View
+    {
+        // Track page view
+        $this->trackPageView($request, 'tag', null);
 
+        $query = News::published()
+            ->with('category')
+            ->whereHas('tags', function($q) use ($tag) {
+                $q->where('tags.id', $tag->id);
+            })
+            ->latest();
+
+        $news = $query->paginate(12);
+
+        // Get categories for filter
+        $categories = Category::withCount('publishedNews')->get();
+        
+        // Get sidebar ads
+        $sidebarAds = Ad::active()->byPosition('sidebar')->get();
+        
+        // Get most viewed news for sidebar
+        $mostViewedNews = News::published()
+            ->with('category')
+            ->mostViewed()
+            ->take(5)
+            ->get();
+
+        return view('public.news.index', compact(
+            'news',
+            'categories',
+            'sidebarAds',
+            'mostViewedNews',
+            'tag'
+        ));
+    }
 
     /**
      * Track page view for analytics.
