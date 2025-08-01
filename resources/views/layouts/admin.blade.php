@@ -46,7 +46,13 @@
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}" 
                                href="{{ route('admin.categories.index') }}">
-                                <i class="fas fa-tags"></i> Categories
+                                <i class="fas fa-folder"></i> Categories
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.tags.*') ? 'active' : '' }}" 
+                               href="{{ route('admin.tags.index') }}">
+                                <i class="fas fa-tags"></i> Tags
                             </a>
                         </li>
                         <!-- <li class="nav-item">

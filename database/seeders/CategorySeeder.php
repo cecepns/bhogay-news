@@ -12,6 +12,11 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
+        // Skip if categories already exist
+        if (Category::count() > 0) {
+            return;
+        }
+
         // Buat 15 kategori dasar
         Category::factory(15)->create();
         
@@ -22,14 +27,16 @@ class CategorySeeder extends Seeder
         Category::factory(3)->shortDescription()->create();
         
         // Buat kategori dengan data spesifik
-        Category::create([
+        Category::firstOrCreate([
             'name' => 'Berita Utama',
+        ], [
             'slug' => 'berita-utama',
             'description' => 'Berita-berita utama dan terpenting yang sedang terjadi saat ini.',
         ]);
         
-        Category::create([
+        Category::firstOrCreate([
             'name' => 'Breaking News',
+        ], [
             'slug' => 'breaking-news',
             'description' => 'Berita terbaru dan mendadak yang memerlukan perhatian khusus.',
         ]);

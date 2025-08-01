@@ -25,8 +25,12 @@
                         
                         <div class="mb-3">
                             <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control @error('title') is-invalid @enderror" 
-                                   id="title" name="title" value="{{ old('title', $news->title) }}" required>
+                            <input type="text" 
+                                   class="form-control @error('title') is-invalid @enderror" 
+                                   id="title" 
+                                   name="title" 
+                                   value="{{ old('title', $news->title) }}" 
+                                   required>
                             @error('title')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -35,7 +39,9 @@
                         <div class="mb-3">
                             <label for="category_id" class="form-label">Category <span class="text-danger">*</span></label>
                             <select class="form-select @error('category_id') is-invalid @enderror" 
-                                    id="category_id" name="category_id" required>
+                                    id="category_id" 
+                                    name="category_id" 
+                                    required>
                                 <option value="">Select Category</option>
                                 @foreach($categories as $category)
                                     <option value="{{ $category->id }}" 
@@ -50,9 +56,35 @@
                         </div>
 
                         <div class="mb-3">
+                            <label for="addTags" class="form-label">Tags</label>
+                            <input class="form-control" type="text" id="addTags" placeholder="Ketik tag dan tekan Enter untuk menambahkan">
+                            <div class="form-text">
+                                <p class="text-muted mt-2">
+                                    Saran tags: 
+                                    @foreach($tags->take(5) as $tag)
+                                        <span class="badge bg-light text-dark me-1 tag-suggestion" 
+                                              data-tag="{{ $tag->name }}" 
+                                              style="cursor: pointer; transition: all 0.2s;"
+                                              onmouseover="this.style.backgroundColor='#007bff'; this.style.color='white';"
+                                              onmouseout="this.style.backgroundColor='#f8f9fa'; this.style.color='#212529';">
+                                            {{ $tag->name }}
+                                        </span>
+                                    @endforeach
+                                </p>
+                            </div>
+                            
+                            <!-- Tag Preview -->
+                            <div id="selected-tags" class="mt-2"></div>
+                            <input type="hidden" hidden id="tags" name="tags" value="{{ old('tags', $news->tags->pluck('name')->implode(', ')) }}">
+                        </div>
+
+                        <div class="mb-3">
                             <label for="thumbnail" class="form-label">Thumbnail Image</label>
-                            <input type="file" class="form-control @error('thumbnail') is-invalid @enderror" 
-                                   id="thumbnail" name="thumbnail" accept="image/*">
+                            <input type="file" 
+                                   class="form-control @error('thumbnail') is-invalid @enderror" 
+                                   id="thumbnail" 
+                                   name="thumbnail" 
+                                   accept="image/*">
                             @error('thumbnail')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -78,7 +110,10 @@
 
                         <div class="mb-3">
                             <label for="content" class="form-label">Content <span class="text-danger">*</span></label>
-                            <input id="content" type="hidden" name="content" value="{{ old('content', $news->content) }}">
+                            <input id="content" 
+                                   type="hidden" 
+                                   name="content" 
+                                   value="{{ old('content', $news->content) }}">
                             <trix-editor input="content" class="@error('content') is-invalid @enderror"></trix-editor>
                             @error('content')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -88,7 +123,9 @@
                         <div class="mb-3">
                             <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
                             <select class="form-select @error('status') is-invalid @enderror" 
-                                    id="status" name="status" required>
+                                    id="status" 
+                                    name="status" 
+                                    required>
                                 <option value="draft" {{ old('status', $news->status) == 'draft' ? 'selected' : '' }}>Draft</option>
                                 <option value="published" {{ old('status', $news->status) == 'published' ? 'selected' : '' }}>Published</option>
                             </select>
@@ -196,33 +233,144 @@
 @endsection
 
 @section('scripts')
-<script>
-    // ANCHOR: Auto-update slug preview from title
-    document.getElementById('title').addEventListener('input', function() {
-        // This would be for slug preview if needed
-        // For now, slug is auto-generated on the server side
-    });
+    <!-- Trix Editor JS -->
+    <script type="text/javascript" src="https://unpkg.com/trix@2.0.0/dist/trix.umd.min.js"></script>
     
-    // ANCHOR: Confirm before leaving with unsaved changes
-    let formChanged = false;
-    const form = document.querySelector('form');
-    const inputs = form.querySelectorAll('input, select, textarea');
-    
-    inputs.forEach(input => {
-        input.addEventListener('change', () => {
-            formChanged = true;
+    <script>
+        // ANCHOR: Configure Trix for file attachments
+        document.addEventListener("trix-attachment-add", function(event) {
+            handleTrixAttachment(event);
         });
-    });
-    
-    window.addEventListener('beforeunload', function(e) {
-        if (formChanged) {
-            e.preventDefault();
-            e.returnValue = '';
+
+        function handleTrixAttachment(event) {
+            var attachment = event.attachment;
+            
+            if (attachment.file) {
+                var formData = new FormData();
+                formData.append("Content-Type", attachment.file.type);
+                formData.append("attachment", attachment.file);
+                formData.append("_token", document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+
+                fetch("{{ route('admin.trix.attachment') }}", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.url) {
+                        attachment.setAttributes({
+                            url: data.url,
+                            href: data.url
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
         }
-    });
-    
-    form.addEventListener('submit', function() {
-        formChanged = false;
-    });
-</script>
+
+        // ANCHOR: Tags input functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tagsInput = document.getElementById('addTags');
+            const tagsHiddenInput = document.getElementById('tags');
+            const selectedTagsDiv = document.getElementById('selected-tags');
+            const existingTags = @json($tags->pluck('name')->toArray());
+            let selectedTags = @json($news->tags->pluck('name')->toArray());
+
+            function updateSelectedTags() {
+                selectedTagsDiv.innerHTML = '';
+                
+                if (selectedTags.length > 0) {
+                    const label = document.createElement('small');
+                    label.textContent = 'Selected tags:';
+                    label.className = 'text-muted d-block mb-2';
+                    selectedTagsDiv.appendChild(label);
+                    
+                    selectedTags.forEach((tag, index) => {
+                        const badge = document.createElement('span');
+                        badge.className = 'badge bg-primary me-1 mb-1';
+                        badge.innerHTML = tag + ' <i class="fas fa-times" style="cursor: pointer; margin-left: 5px;" onclick="removeTag(' + index + ')"></i>';
+                        selectedTagsDiv.appendChild(badge);
+                    });
+                }
+            }
+
+            // Add tag function
+            function addTag(tagName) {
+                tagName = tagName.trim();
+                if (tagName && !selectedTags.includes(tagName)) {
+                    selectedTags.push(tagName);
+                    updateSelectedTags();
+                    updateHiddenInput();
+                }
+            }
+
+            // Remove tag function (global)
+            window.removeTag = function(index) {
+                selectedTags.splice(index, 1);
+                updateSelectedTags();
+                updateHiddenInput();
+                tagsInput.value = '';
+            }
+
+            // Update hidden input for form submission
+            function updateHiddenInput() {
+                tagsHiddenInput.value = selectedTags.join(', ');
+            }
+
+            // Handle Enter key to add tag
+            tagsInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const currentValue = this.value.trim();
+                    if (currentValue) {
+                        const tags = currentValue.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
+                        tags.forEach(tag => addTag(tag));
+                        this.value = '';
+                    }
+                }
+            });
+
+            // Handle tag suggestions click
+            document.querySelectorAll('.tag-suggestion').forEach(suggestion => {
+                suggestion.addEventListener('click', function() {
+                    const tagName = this.getAttribute('data-tag');
+                    addTag(tagName);
+                    tagsInput.value = '';
+                });
+            });
+
+            // Initial update
+            updateSelectedTags();
+        });
+
+        // ANCHOR: Auto-update slug preview from title
+        document.getElementById('title').addEventListener('input', function() {
+            // This would be for slug preview if needed
+            // For now, slug is auto-generated on the server side
+        });
+        
+        // ANCHOR: Confirm before leaving with unsaved changes
+        let formChanged = false;
+        const form = document.querySelector('form');
+        const inputs = form.querySelectorAll('input, select, textarea');
+        
+        inputs.forEach(input => {
+            input.addEventListener('change', () => {
+                formChanged = true;
+            });
+        });
+        
+        window.addEventListener('beforeunload', function(e) {
+            if (formChanged) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+        
+        form.addEventListener('submit', function() {
+            formChanged = false;
+        });
+    </script>
 @endsection 

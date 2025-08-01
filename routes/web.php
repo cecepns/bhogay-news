@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\TagController as AdminTagController;
 use App\Http\Controllers\Admin\AdController as AdminAdController;
 use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\Public\NewsController as PublicNewsController;
@@ -33,6 +34,9 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     
     // Category Management
     Route::resource('categories', AdminCategoryController::class)->except(['show']);
+    
+    // Tag Management
+    Route::resource('tags', AdminTagController::class);
     
     // Ads Management
     Route::resource('ads', AdminAdController::class);

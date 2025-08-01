@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\News;
 use App\Models\Category;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -40,7 +41,8 @@ class NewsController extends Controller
     public function create(): View
     {
         $categories = Category::all();
-        return view('admin.news.create', compact('categories'));
+        $tags = Tag::orderBy('name')->get();
+        return view('admin.news.create', compact('categories', 'tags'));
     }
 
     /**
@@ -53,7 +55,8 @@ class NewsController extends Controller
             'content' => 'required|string',
             'category_id' => 'required|exists:categories,id',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'status' => 'required|in:draft,published'
+            'status' => 'required|in:draft,published',
+            'tags' => 'nullable|string|max:1000'
         ]);
 
         $validated['slug'] = Str::slug($validated['title']);
@@ -63,7 +66,27 @@ class NewsController extends Controller
             $validated['thumbnail'] = $request->file('thumbnail')->store('news-thumbnails', 'public');
         }
 
-        News::create($validated);
+        $news = News::create($validated);
+
+        // Handle tags
+        if ($request->has('tags') && !empty($request->tags)) {
+            $tagNames = array_map('trim', explode(',', $request->tags));
+            $tagIds = [];
+            
+            foreach ($tagNames as $tagName) {
+                if (!empty($tagName)) {
+                    $tag = Tag::firstOrCreate(
+                        ['name' => $tagName],
+                        ['slug' => Str::slug($tagName)]
+                    );
+                    $tagIds[] = $tag->id;
+                }
+            }
+            
+            if (!empty($tagIds)) {
+                $news->tags()->attach($tagIds);
+            }
+        }
 
         return redirect()->route('admin.news.index')
             ->with('success', 'News created successfully.');
@@ -74,7 +97,7 @@ class NewsController extends Controller
      */
     public function show(News $news): View
     {
-        $news->load('category');
+        $news->load(['category', 'tags']);
         return view('admin.news.show', compact('news'));
     }
 
@@ -84,7 +107,9 @@ class NewsController extends Controller
     public function edit(News $news): View
     {
         $categories = Category::all();
-        return view('admin.news.edit', compact('news', 'categories'));
+        $tags = Tag::orderBy('name')->get();
+        $news->load('tags');
+        return view('admin.news.edit', compact('news', 'categories', 'tags'));
     }
 
     /**
@@ -97,7 +122,8 @@ class NewsController extends Controller
             'content' => 'required|string',
             'category_id' => 'required|exists:categories,id',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'status' => 'required|in:draft,published'
+            'status' => 'required|in:draft,published',
+            'tags' => 'nullable|string|max:1000'
         ]);
 
         $validated['slug'] = Str::slug($validated['title']);
@@ -112,6 +138,24 @@ class NewsController extends Controller
         }
 
         $news->update($validated);
+
+        // Handle tags
+        $tagIds = [];
+        if ($request->has('tags') && !empty($request->tags)) {
+            $tagNames = array_map('trim', explode(',', $request->tags));
+            
+            foreach ($tagNames as $tagName) {
+                if (!empty($tagName)) {
+                    $tag = Tag::firstOrCreate(
+                        ['name' => $tagName],
+                        ['slug' => Str::slug($tagName)]
+                    );
+                    $tagIds[] = $tag->id;
+                }
+            }
+        }
+        
+        $news->tags()->sync($tagIds);
 
         return redirect()->route('admin.news.index')
             ->with('success', 'News updated successfully.');

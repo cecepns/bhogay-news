@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -42,6 +43,14 @@ class News extends Model
     }
 
     /**
+     * Get the tags that belong to the news.
+     */
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
+    /**
      * Scope a query to only include published news.
      */
     public function scopePublished(Builder $query): void
@@ -71,6 +80,26 @@ class News extends Model
     public function scopeLatest(Builder $query): void
     {
         $query->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * Scope a query to filter by tag.
+     */
+    public function scopeWithTag(Builder $query, string $tagSlug): void
+    {
+        $query->whereHas('tags', function ($q) use ($tagSlug) {
+            $q->where('slug', $tagSlug);
+        });
+    }
+
+    /**
+     * Scope a query to filter by multiple tags.
+     */
+    public function scopeWithTags(Builder $query, array $tagSlugs): void
+    {
+        $query->whereHas('tags', function ($q) use ($tagSlugs) {
+            $q->whereIn('slug', $tagSlugs);
+        });
     }
 
     /**
