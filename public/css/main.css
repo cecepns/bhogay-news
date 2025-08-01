@@ -439,20 +439,6 @@ a.left-topbar-item:hover {
   transform: scaleX(0);
 }
 
-.main-menu > li > a::after {
-  content: "\f2f9";
-  font-family: Material-Design-Iconic-Font;
-  font-size: 16px;
-  color: #222;
-  line-height: 1.5;
-  margin-left: 6px;
-  margin-bottom: 1px;
-  transition: all 0.3s;
-  -webkit-transition: all 0.3s;
-  -o-transition: all 0.3s;
-  -moz-transition: all 0.3s;
-}
-
 li.main-menu-active > a::before {
   -webkit-transform: scaleX(1);
   -moz-transform: scaleX(1);

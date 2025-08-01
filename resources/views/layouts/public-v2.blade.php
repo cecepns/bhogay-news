@@ -2228,8 +2228,8 @@
 						</div>
 
 						<ul class="m-t--12">
-							@if(isset($categoriesFooter) && $categoriesFooter->count() > 0)
-								@foreach($categoriesFooter as $category)
+							@if(isset($topFiveCategories) && $topFiveCategories->count() > 0)
+								@foreach($topFiveCategories as $category)
 									<li class="how-bor1 p-rl-5 p-tb-10">
 										<a href="{{ route('news.index', ['category' => $category->slug]) }}" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
 											{{ $category->name }} ({{ $category->published_news_count }})
