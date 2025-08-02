@@ -68,13 +68,18 @@
 					<a href="{{ route('home') }}"><img src="{{ asset('images/logo.png') }}" alt="LOGO"></a>
 				</div>	
 
-                @if($banner728x90[0] && !empty($banner728x90[0]->image_url))
-                    <div class="banner-header">
-                        <a href="{{ $banner728x90[0]->link_url }}" target="_blank" rel="noopener noreferrer">
-                            <img src="{{ asset('storage/' . $banner728x90[0]->image_url) }}" alt="{{ $banner728x90[0]->title }}" class="banner-ad">
-                        </a>
-                    </div>
-                @endif
+				<div class="banner-header">
+					<script type="text/javascript">
+						atOptions = {
+							'key' : 'e1ec5083f8c41ac8084fd2965303cd7b',
+							'format' : 'iframe',
+							'height' : 90,
+							'width' : 728,
+							'params' : {}
+						};
+					</script>
+					<script type="text/javascript" src="//www.highperformanceformat.com/e1ec5083f8c41ac8084fd2965303cd7b/invoke.js"></script>
+				</div>
 			</div>	
 			
 			<!--  -->
