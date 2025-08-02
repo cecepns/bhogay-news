@@ -22,7 +22,7 @@ class AdSeeder extends Seeder
             [
                 'title' => 'Detail Page Sidebar Banner',
                 'script' => null,
-                'size' => '160x600',
+                'size' => '160x300',
                 'is_active' => true,
             ],
             [
@@ -38,9 +38,9 @@ class AdSeeder extends Seeder
                 'is_active' => true,
             ],
             [
-                'title' => 'Home Sidebar Banner',
+                'title' => 'Footer Banner',
                 'script' => null,
-                'size' => '300x250',
+                'size' => '320x50',
                 'is_active' => true,
             ],
             [
