@@ -69,7 +69,7 @@
 				</div>	
 
 				<div class="banner-header">
-					<!-- <script type="text/javascript">
+					<script type="text/javascript">
 						atOptions = {
 							'key' : 'e1ec5083f8c41ac8084fd2965303cd7b',
 							'format' : 'iframe',
@@ -78,7 +78,7 @@
 							'params' : {}
 						};
 					</script>
-					<script type="text/javascript" src="//www.highperformanceformat.com/e1ec5083f8c41ac8084fd2965303cd7b/invoke.js"></script> -->
+					<script type="text/javascript" src="//www.highperformanceformat.com/e1ec5083f8c41ac8084fd2965303cd7b/invoke.js"></script>
 				</div>
 			</div>	
 			
@@ -227,17 +227,5 @@
 	<script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
 <!--===============================================================================================-->
 	<script src="{{ asset('js/main.js') }}"></script>
-
-	<script type="text/javascript">
-		atOptions = {
-			'key' : 'e1ec5083f8c41ac8084fd2965303cd7b',
-			'format' : 'iframe',
-			'height' : 90,
-			'width' : 728,
-			'params' : {}
-		};
-	</script>
-	<script type="text/javascript" src="//www.highperformanceformat.com/e1ec5083f8c41ac8084fd2965303cd7b/invoke.js"></script>
-
 </body>
 </html>
