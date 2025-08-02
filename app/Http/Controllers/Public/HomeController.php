@@ -22,6 +22,12 @@ class HomeController extends Controller
         // Track page view
         $this->trackPageView($request, 'home');
 
+        // Get trending news for header (most viewed in last 7 days)
+        $trendingNews = News::published()
+            ->mostViewed()
+            ->take(5)
+            ->get();
+
         // Get featured news for carousel (random 5 from top 30 most viewed)
         $featuredNews = News::published()
             ->with('category')
@@ -61,6 +67,7 @@ class HomeController extends Controller
             ->get();
 
         return view('public.home', compact(
+            'trendingNews',
             'featuredNews',
             'latestNews', 
             'mostViewedNews',
