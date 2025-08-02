@@ -214,5 +214,7 @@
 	<script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
 <!--===============================================================================================-->
 	<script src="{{ asset('js/main.js') }}"></script>
+
+	@include('components.advertisement', ['size' => 'no-size'])
 </body>
 </html>
