@@ -14,6 +14,7 @@ use App\Http\Controllers\Public\NewsController as PublicNewsController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/news', [PublicNewsController::class, 'index'])->name('news.index');
 Route::get('/news/{slug}', [PublicNewsController::class, 'show'])->name('news.show');
+Route::get('/tag/{tag:slug}', [PublicNewsController::class, 'byTag'])->name('news.byTag');
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
@@ -38,6 +39,6 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     // Tag Management
     Route::resource('tags', AdminTagController::class);
     
-    // Ads Management
-    Route::resource('ads', AdminAdController::class);
+    // Ads Management (without create, store, and destroy)
+    Route::resource('ads', AdminAdController::class)->except(['create', 'store', 'destroy']);
 });

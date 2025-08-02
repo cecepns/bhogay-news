@@ -4,23 +4,6 @@
 @section('page-title', 'Advertisements Management')
 
 @section('content')
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <a href="{{ route('admin.ads.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Add New Advertisement
-            </a>
-        </div>
-        <div class="col-md-6">
-            <form method="GET" class="d-flex">
-                <input type="text" class="form-control me-2" name="search" 
-                       placeholder="Search ads..." value="{{ request('search') }}">
-                <button type="submit" class="btn btn-outline-secondary">
-                    <i class="fas fa-search"></i>
-                </button>
-            </form>
-        </div>
-    </div>
-
     <div class="card">
         <div class="card-header">
             <h5 class="mb-0">All Advertisements ({{ $ads->total() }})</h5>
@@ -34,7 +17,6 @@
                                 <th>Title</th>
                                 <th>Image</th>
                                 <th>Size</th>
-                                <th>Position</th>
                                 <th>Status</th>
                                 <th>Created</th>
                                 <th>Actions</th>
@@ -70,9 +52,6 @@
                                         <span class="badge bg-info">{{ $ad->size }}</span>
                                     </td>
                                     <td>
-                                        <span class="badge bg-secondary">{{ $ad->position }}</span>
-                                    </td>
-                                    <td>
                                         @if($ad->is_active)
                                             <span class="badge bg-success">Active</span>
                                         @else
@@ -95,14 +74,6 @@
                                                class="btn btn-sm btn-outline-primary" title="Edit">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <form method="POST" action="{{ route('admin.ads.destroy', $ad) }}" 
-                                                  class="d-inline" onsubmit="return confirm('Are you sure you want to delete this advertisement?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </form>
                                         </div>
                                     </td>
                                 </tr>
@@ -119,10 +90,7 @@
                 <div class="text-center py-5">
                     <i class="fas fa-ad fa-3x text-muted mb-3"></i>
                     <h5 class="text-muted">No advertisements found</h5>
-                    <p class="text-muted mb-4">Start by creating your first advertisement.</p>
-                    <a href="{{ route('admin.ads.create') }}" class="btn btn-primary">
-                        <i class="fas fa-plus"></i> Create First Advertisement
-                    </a>
+                    <p class="text-muted mb-4">No advertisements available in the system.</p>
                 </div>
             @endif
         </div>

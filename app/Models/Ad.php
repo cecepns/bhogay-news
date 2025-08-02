@@ -15,7 +15,6 @@ class Ad extends Model
         'image_url',
         'link_url',
         'size',
-        'position',
         'is_active',
     ];
 
@@ -32,14 +31,6 @@ class Ad extends Model
     public function scopeActive(Builder $query): void
     {
         $query->where('is_active', true);
-    }
-
-    /**
-     * Scope a query to filter by position.
-     */
-    public function scopeByPosition(Builder $query, string $position): void
-    {
-        $query->where('position', $position);
     }
 
     /**

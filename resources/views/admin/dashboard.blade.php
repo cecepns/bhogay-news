@@ -61,17 +61,12 @@
                                 <i class="fas fa-plus"></i> Add News
                             </a>
                         </div>
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-4 mb-2">
                             <a href="{{ route('admin.categories.create') }}" class="btn btn-success w-100">
                                 <i class="fas fa-tag"></i> Add Category
                             </a>
                         </div>
-                        <div class="col-md-3 mb-2">
-                            <a href="{{ route('admin.ads.create') }}" class="btn btn-warning w-100">
-                                <i class="fas fa-ad"></i> Add Advertisement
-                            </a>
-                        </div>
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-4 mb-2">
                             <a href="{{ route('home') }}" target="_blank" class="btn btn-info w-100">
                                 <i class="fas fa-external-link-alt"></i> View Site
                             </a>

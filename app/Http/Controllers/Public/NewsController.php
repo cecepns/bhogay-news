@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Public;
 use App\Http\Controllers\Controller;
 use App\Models\News;
 use App\Models\Category;
+use App\Models\Tag;
 use App\Models\Ad;
 use App\Models\PageView;
 use Illuminate\Http\Request;
@@ -35,13 +36,22 @@ class NewsController extends Controller
             });
         }
 
+        // Handle tag filter
+        if ($request->has('tag') && $request->tag) {
+            $query->whereHas('tags', function($q) use ($request) {
+                $q->where('slug', $request->tag);
+            });
+        }
+
         $news = $query->paginate(12);
 
         // Get categories for filter
         $categories = Category::withCount('publishedNews')->get();
+
+        // Get tags for filter
+        $tags = Tag::withCount('publishedNews')->get();
         
-        // Get sidebar ads
-        $sidebarAds = Ad::active()->byPosition('sidebar')->get();
+        $banner468x60 = Ad::active()->where('size', '468x60')->get();
         
         // Get most viewed news for sidebar
         $mostViewedNews = News::published()
@@ -53,7 +63,8 @@ class NewsController extends Controller
         return view('public.news.index', compact(
             'news',
             'categories',
-            'sidebarAds',
+            'tags',
+            'banner468x60',
             'mostViewedNews'
         ));
     }
@@ -64,7 +75,7 @@ class NewsController extends Controller
     public function show(Request $request, string $slug): View
     {
         $news = News::published()
-            ->with(['category', 'pageViews'])
+            ->with(['category', 'pageViews', 'tags'])
             ->where('slug', $slug)
             ->firstOrFail();
 
@@ -81,21 +92,62 @@ class NewsController extends Controller
             ->take(4)
             ->get();
 
-        // Get sidebar ads
-        $sidebarAds = Ad::active()->byPosition('sidebar')->get();
-        
-        // Get content ads
-        $contentAds = Ad::active()->byPosition('content-top')->get();
+        // Get most viewed news for sidebar
+        $mostViewedNews = News::published()
+            ->with('category')
+            ->mostViewed()
+            ->where('id', '!=', $news->id)
+            ->take(5)
+            ->get();
+
+        $banner160x300 = Ad::active()->where('size', '160x300')->get();
 
         return view('public.news.show', compact(
             'news',
             'relatedNews',
-            'sidebarAds',
-            'contentAds'
+            'mostViewedNews',
+            'banner160x300'
         ));
     }
 
+    /**
+     * Display news by tag.
+     */
+    public function byTag(Request $request, Tag $tag): View
+    {
+        // Track page view
+        $this->trackPageView($request, 'tag', null);
 
+        $query = News::published()
+            ->with('category')
+            ->whereHas('tags', function($q) use ($tag) {
+                $q->where('tags.id', $tag->id);
+            })
+            ->latest();
+
+        $news = $query->paginate(12);
+
+        // Get categories for filter
+        $categories = Category::withCount('publishedNews')->get();
+        
+        // Get sidebar ads
+        $sidebarAds = Ad::active()->get();
+        
+        // Get most viewed news for sidebar
+        $mostViewedNews = News::published()
+            ->with('category')
+            ->mostViewed()
+            ->take(5)
+            ->get();
+
+        return view('public.news.index', compact(
+            'news',
+            'categories',
+            'sidebarAds',
+            'mostViewedNews',
+            'tag'
+        ));
+    }
 
     /**
      * Track page view for analytics.

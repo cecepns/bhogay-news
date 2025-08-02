@@ -55,12 +55,12 @@
                                 <i class="fas fa-tags"></i> Tags
                             </a>
                         </li>
-                        <!-- <li class="nav-item">
+                        <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.ads.*') ? 'active' : '' }}" 
                                href="{{ route('admin.ads.index') }}">
                                 <i class="fas fa-ad"></i> Advertisements
                             </a>
-                        </li> -->
+                        </li>
                         <li class="nav-item mt-4">
                             <a class="nav-link" href="{{ route('home') }}" target="_blank">
                                 <i class="fas fa-external-link-alt"></i> View Site

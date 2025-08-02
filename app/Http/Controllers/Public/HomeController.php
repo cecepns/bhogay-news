@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\News;
 use App\Models\Ad;
 use App\Models\Category;
+use App\Models\Tag;
 use App\Models\PageView;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class HomeController extends Controller
 {
+
     /**
      * Display the news portal homepage.
      */
@@ -20,10 +22,12 @@ class HomeController extends Controller
         // Track page view
         $this->trackPageView($request, 'home');
 
-        // Get featured news for carousel (latest 5 published news)
+        // Get featured news for carousel (random 5 from top 30 most viewed)
         $featuredNews = News::published()
             ->with('category')
-            ->latest()
+            ->mostViewed()
+            ->take(30)
+            ->inRandomOrder()
             ->take(5)
             ->get();
 
@@ -32,6 +36,8 @@ class HomeController extends Controller
             ->with('category')
             ->whereNotIn('id', $featuredNews->pluck('id'))
             ->latest()
+            ->take(50)
+            ->inRandomOrder()
             ->take(8)
             ->get();
 
@@ -39,25 +45,28 @@ class HomeController extends Controller
         $mostViewedNews = News::published()
             ->with('category')
             ->mostViewed()
-            ->take(6)
+            ->take(5)
             ->get();
 
-        // Get active ads by position
-        $headerAds = Ad::active()->byPosition('header')->get();
-        $sidebarAds = Ad::active()->byPosition('sidebar')->get();
-        $footerAds = Ad::active()->byPosition('footer')->get();
+        // Get active ads
+        $banner300x250 = Ad::active()->where('size', '300x250')->get();
 
         // Get categories for navigation
         $categories = Category::withCount('publishedNews')->get();
+
+        // Get popular tags with news count
+        $tags = Tag::withCount('news')
+            ->orderBy('news_count', 'desc')
+            ->take(10)
+            ->get();
 
         return view('public.home', compact(
             'featuredNews',
             'latestNews', 
             'mostViewedNews',
-            'headerAds',
-            'sidebarAds',
-            'footerAds',
-            'categories'
+            'banner300x250',
+            'categories',
+            'tags'
         ));
     }
 
