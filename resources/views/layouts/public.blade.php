@@ -152,7 +152,7 @@
 
 						<div>
 							<p class="f1-s-1 cl11 p-b-16">
-								Bhogay News is your trusted source for the latest news, insightful articles, and trending stories from around the world. Stay informed with our up-to-date coverage and in-depth analysis on topics that matter to you.
+								{{ $siteName }} is your trusted source for the latest news, insightful articles, and trending stories from around the world. Stay informed with our up-to-date coverage and in-depth analysis on topics that matter to you.
 							</p>
 						</div>
 					</div>
@@ -225,7 +225,7 @@
 		<div class="bg11">
 			<div class="container size-h-4 flex-c-c p-tb-15">
 				<span class="f1-s-1 cl0 txt-center">
-					Copyright © 2025 Bhogay News. All rights reserved.
+					Copyright © {{ $currentYear }} {{ $siteName }}. All rights reserved. | Total News: {{ $totalNews }} | Categories: {{ $totalCategories }}
 				</span>
 			</div>
 		</div>

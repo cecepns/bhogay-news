@@ -57,42 +57,7 @@
                             <div class="form-text">Optional. Where users will be redirected when they click the ad.</div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="size" class="form-label">Size <span class="text-danger">*</span></label>
-                                    <select class="form-select @error('size') is-invalid @enderror" 
-                                            id="size" name="size" required>
-                                        <option value="">Select Size</option>
-                                        @foreach($sizes as $size)
-                                            <option value="{{ $size }}" {{ old('size', $ad->size) == $size ? 'selected' : '' }}>
-                                                {{ $size }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('size')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="position" class="form-label">Position <span class="text-danger">*</span></label>
-                                    <select class="form-select @error('position') is-invalid @enderror" 
-                                            id="position" name="position" required>
-                                        <option value="">Select Position</option>
-                                        @foreach($positions as $position)
-                                            <option value="{{ $position }}" {{ old('position', $ad->position) == $position ? 'selected' : '' }}>
-                                                {{ ucfirst($position) }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('position')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
+
 
                         <div class="mb-3">
                             <div class="form-check">
@@ -150,11 +115,6 @@
                     <div class="mb-3">
                         <strong>Current Size:</strong><br>
                         <span class="badge bg-info">{{ $ad->size }}</span>
-                    </div>
-
-                    <div class="mb-3">
-                        <strong>Current Position:</strong><br>
-                        <span class="badge bg-secondary">{{ ucfirst($ad->position) }}</span>
                     </div>
 
                     @if($ad->link_url)

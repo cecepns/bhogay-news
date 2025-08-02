@@ -42,7 +42,7 @@ class NewsController extends Controller
         $categories = Category::withCount('publishedNews')->get();
         
         // Get sidebar ads
-        $sidebarAds = Ad::active()->byPosition('sidebar')->get();
+        $sidebarAds = Ad::active()->get();
         
         // Get most viewed news for sidebar
         $mostViewedNews = News::published()
@@ -83,10 +83,10 @@ class NewsController extends Controller
             ->get();
 
         // Get sidebar ads
-        $sidebarAds = Ad::active()->byPosition('sidebar')->get();
+        $sidebarAds = Ad::active()->get();
         
         // Get content ads
-        $contentAds = Ad::active()->byPosition('content-top')->get();
+        $contentAds = Ad::active()->get();
 
         return view('public.news.show', compact(
             'news',
@@ -117,7 +117,7 @@ class NewsController extends Controller
         $categories = Category::withCount('publishedNews')->get();
         
         // Get sidebar ads
-        $sidebarAds = Ad::active()->byPosition('sidebar')->get();
+        $sidebarAds = Ad::active()->get();
         
         // Get most viewed news for sidebar
         $mostViewedNews = News::published()

@@ -22,12 +22,7 @@
                                         <span class="badge bg-info">{{ $ad->size }}</span>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <strong>Position:</strong><br>
-                                        <span class="badge bg-secondary">{{ ucfirst($ad->position) }}</span>
-                                    </div>
-                                </div>
+
                             </div>
 
                             <div class="mb-3">
@@ -98,15 +93,6 @@
                             <i class="fas fa-edit"></i> Edit Advertisement
                         </a>
                         
-                        <form method="POST" action="{{ route('admin.ads.destroy', $ad) }}" 
-                              onsubmit="return confirm('Are you sure you want to delete this advertisement?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger w-100">
-                                <i class="fas fa-trash"></i> Delete Advertisement
-                            </button>
-                        </form>
-                        
                         <a href="{{ route('admin.ads.index') }}" class="btn btn-secondary">
                             <i class="fas fa-arrow-left"></i> Back to Advertisements
                         </a>
@@ -157,30 +143,7 @@
                         </small>
                     </div>
 
-                    <div class="mb-3">
-                        <strong>Position Description:</strong><br>
-                        <small class="text-muted">
-                            @switch($ad->position)
-                                @case('header')
-                                    Top of the page
-                                    @break
-                                @case('sidebar')
-                                    Side navigation area
-                                    @break
-                                @case('footer')
-                                    Bottom of the page
-                                    @break
-                                @case('content-top')
-                                    Above main content
-                                    @break
-                                @case('content-bottom')
-                                    Below main content
-                                    @break
-                                @default
-                                    {{ ucfirst($ad->position) }}
-                            @endswitch
-                        </small>
-                    </div>
+
                 </div>
             </div>
         </div>

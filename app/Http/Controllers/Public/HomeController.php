@@ -48,27 +48,15 @@ class HomeController extends Controller
             ->take(5)
             ->get();
 
-        $mostViewedNewsFooter = News::published()
-            ->with('category')
-            ->mostViewed()
-            ->take(30)
-            ->inRandomOrder()
-            ->take(3)
-            ->get();
-
-        // Get active ads by position
-        $headerAds = Ad::active()->byPosition('header')->get();
-        $sidebarAds = Ad::active()->byPosition('sidebar')->get();
-        $footerAds = Ad::active()->byPosition('footer')->get();
+        // Get active ads
+        $banner728x90 = Ad::active()->where('size', '728x90')->get();
+        $banner160x300 = Ad::active()->where('size', '160x300')->get();
+        $banner468x60 = Ad::active()->where('size', '468x60')->get();
+        $banner300x250 = Ad::active()->where('size', '300x250')->get();
+        $banner320x50 = Ad::active()->where('size', '320x50')->get();
 
         // Get categories for navigation
         $categories = Category::withCount('publishedNews')->get();
-
-        // Get categories for footer (top 5 with most news)
-        $topFiveCategories = Category::withCount('publishedNews')
-            ->orderBy('published_news_count', 'desc')
-            ->take(5)
-            ->get();
 
         // Get popular tags with news count
         $tags = Tag::withCount('news')
@@ -80,13 +68,13 @@ class HomeController extends Controller
             'featuredNews',
             'latestNews', 
             'mostViewedNews',
-            'headerAds',
-            'sidebarAds',
-            'footerAds',
+            'banner728x90',
+            'banner160x300',
+            'banner468x60',
+            'banner300x250',
+            'banner320x50',
             'categories',
-            'tags',
-            'mostViewedNewsFooter',
-            'topFiveCategories'
+            'tags'
         ));
     }
 

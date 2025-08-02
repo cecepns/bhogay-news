@@ -39,6 +39,6 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     // Tag Management
     Route::resource('tags', AdminTagController::class);
     
-    // Ads Management
-    Route::resource('ads', AdminAdController::class);
+    // Ads Management (without create, store, and destroy)
+    Route::resource('ads', AdminAdController::class)->except(['create', 'store', 'destroy']);
 });
