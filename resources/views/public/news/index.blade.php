@@ -164,6 +164,10 @@
                             </div>
                         </div>
                     @endif
+
+                    <div class="p-b-30">
+                        @include('components.advertisement', ['size' => '160x300'])
+                    </div>
                 </div>
             </div>
         </div>

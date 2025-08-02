@@ -151,7 +151,7 @@
 								<h3 class="f1-m-2 cl12 tab01-title mb-0">
 									Latest News
 								</h3>
-								<a href="category-01.html" class="tab01-link f1-s-1 cl9 hov-cl10 trans-03">
+								<a href="{{ route('news.index') }}" class="tab01-link f1-s-1 cl9 hov-cl10 trans-03">
 									View all
 									<i class="fs-12 m-l-5 fa fa-caret-right"></i>
 								</a>

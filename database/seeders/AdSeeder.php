@@ -38,9 +38,15 @@ class AdSeeder extends Seeder
                 'is_active' => true,
             ],
             [
-                'title' => 'Footer Banner',
+                'title' => 'Home Sidebar Banner',
                 'script' => null,
-                'size' => '320x50',
+                'size' => '300x250',
+                'is_active' => true,
+            ],
+            [
+                'title' => 'News Sidebar Banner 2',
+                'script' => null,
+                'size' => '160x300',
                 'is_active' => true,
             ],
         ];
