@@ -77,7 +77,6 @@
 							'width' : 728,
 							'params' : {}
 						};
-						console.log('Ad script loaded:', atOptions);
 					</script>
 					<script type="text/javascript" src="//www.highperformanceformat.com/e1ec5083f8c41ac8084fd2965303cd7b/invoke.js"></script>
 				</div>
