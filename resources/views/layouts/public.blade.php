@@ -10,6 +10,7 @@
 	<link rel="stylesheet" type="text/css" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{ asset('fonts/fontawesome-5.0.8/css/fontawesome-all.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{ asset('fonts/iconic/css/material-design-iconic-font.min.css') }}">
 <!--===============================================================================================-->
@@ -112,7 +113,7 @@
 					<div class="col-lg-4 p-b-20">
 						<div class="size-h-3 flex-s-c">
 							<a href="{{ route('home') }}">
-								<img class="max-s-full" src="images/logo-white.png" alt="LOGO">
+								<img class="max-s-full" src="{{ asset('images/logo-white.png') }}" alt="LOGO">
 							</a>
 						</div>
 
@@ -199,7 +200,7 @@
 		<div class="bg11">
 			<div class="container size-h-4 flex-c-c p-tb-15">
 				<span class="f1-s-1 cl0 txt-center">
-					Copyright © {{ $currentYear }} {{ $siteName }}. All rights reserved. | Total News: {{ $totalNews }} | Categories: {{ $totalCategories }}
+					Copyright © {{ $currentYear }} {{ $siteName }}. All rights reserved.
 				</span>
 			</div>
 		</div>

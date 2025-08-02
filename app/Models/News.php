@@ -109,4 +109,30 @@ class News extends Model
     {
         $this->increment('views');
     }
+
+    /**
+     * Get the image URL for the news.
+     */
+    public function getImageUrlAttribute(): string
+    {
+        if ($this->thumbnail) {
+            return asset('storage/' . $this->thumbnail);
+        }
+        
+        return asset('images/blog-01.jpg');
+    }
+
+    /**
+     * Get the published at date for the news.
+     */
+    public function getPublishedAtAttribute(): ?string
+    {
+        if ($this->status === 'published') {
+            return $this->updated_at;
+        }
+        
+        return null;
+    }
+
+
 }

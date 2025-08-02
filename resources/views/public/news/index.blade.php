@@ -4,182 +4,160 @@
 @section('description', isset($tag) ? 'Browse all ' . $tag->name . ' news and updates' : (request('category') ? 'Browse all ' . ($categories->where('slug', request('category'))->first()?->name ?? 'Category') . ' news and updates' : 'Browse all the latest news and updates'))
 
 @section('content')
+
 <div class="container">
-    <div class="row">
-        <!-- Main Content -->
-        <div class="col-lg-9">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div>
-                    @if(isset($tag))
-                        <h1>{{ $tag->name }}</h1>
-                        <p class="text-muted">Browse all news tagged with "{{ $tag->name }}"</p>
-                    @elseif(request('category'))
-                        @php
-                            $currentCategory = $categories->where('slug', request('category'))->first();
-                        @endphp
-                        <h1>{{ $currentCategory ? $currentCategory->name : 'Category' }}</h1>
-                        @if($currentCategory && $currentCategory->description)
-                            <p class="text-muted">{{ $currentCategory->description }}</p>
-                        @endif
-                    @else
-                        <h1>All News</h1>
-                    @endif
-                </div>
-                <div class="text-muted">
-                    {{ $news->total() }} articles found
-                </div>
-            </div>
+    <div class="headline bg0 flex-wr-sb-c p-rl-20 p-tb-8">
+        <div class="f2-s-1 p-r-30 m-tb-6">
+            <a href="{{ route('home') }}" class="breadcrumb-item f1-s-3 cl9">
+                Home 
+            </a>
 
-            <!-- Search Results -->
-            @if(request('search'))
-                <div class="alert alert-info mb-4">
-                    <i class="fas fa-search"></i> Search results for: <strong>"{{ request('search') }}"</strong>
-                    <a href="{{ route('news.index') }}" class="btn btn-sm btn-outline-primary ms-2">Clear</a>
-                </div>
-            @endif
-
-            <!-- Tag Results -->
-            @if(isset($tag))
-                <div class="alert alert-info mb-4">
-                    <i class="fas fa-tag"></i> Showing news tagged with: <strong>"{{ $tag->name }}"</strong>
-                    <a href="{{ route('news.index') }}" class="btn btn-sm btn-outline-primary ms-2">View All News</a>
-                </div>
-            @endif
-
-            <!-- News Grid -->
-            @if($news->count() > 0)
-                <div class="row">
-                    @foreach($news as $article)
-                        <div class="col-md-6 col-lg-4 mb-4">
-                            <div class="card news-card h-100 position-relative">
-                                <a href="{{ route('news.show', $article->slug) }}" class="text-decoration-none text-dark stretched-link">
-                                    <img src="{{ $article->thumbnail ? asset('storage/' . $article->thumbnail) : 'https://placehold.co/300x200?text=News+Image' }}" 
-                                         class="card-img-top news-thumbnail" alt="{{ $article->title }}">
-                                    <div class="card-body d-flex flex-column">
-                                        <div class="mb-2">
-                                            <span class="category-badge">
-                                                {{ $article->category->name }}
-                                            </span>
-                                        </div>
-                                        <h5 class="card-title">
-                                            {{ $article->title }}
-                                        </h5>
-                                        <p class="card-text flex-grow-1">{{ Str::limit(strip_tags($article->content), 120) }}</p>
-                                        <div class="news-meta">
-                                            <small>
-                                                <i class="fas fa-calendar"></i> {{ $article->created_at->format('M d, Y') }}
-                                                <i class="fas fa-eye ms-2"></i> {{ number_format($article->views) }} views
-                                            </small>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-
-                <!-- Pagination -->
-                <div class="d-flex justify-content-center mt-4">
-                    {{ $news->links('vendor.pagination.custom') }}
-                </div>
-            @else
-                <div class="text-center py-5">
-                    <i class="fas fa-newspaper fa-3x text-muted mb-3"></i>
-                    <h4 class="text-muted">
-                        @if(isset($tag))
-                            No news articles found with tag "{{ $tag->name }}"
-                        @elseif(request('category'))
-                            No news articles found in {{ $categories->where('slug', request('category'))->first()?->name ?? 'this category' }}
-                        @else
-                            No news articles found
-                        @endif
-                    </h4>
-                    @if(isset($tag))
-                        <p class="text-muted">Check back later for news tagged with "{{ $tag->name }}".</p>
-                        <a href="{{ route('news.index') }}" class="btn btn-primary">
-                            <i class="fas fa-arrow-left"></i> Browse All News
-                        </a>
-                    @elseif(request('search'))
-                        <p class="text-muted">Try adjusting your search terms or browse all categories.</p>
-                    @elseif(request('category'))
-                        <p class="text-muted">Check back later for the latest updates in this category.</p>
-                        <a href="{{ route('news.index') }}" class="btn btn-primary">
-                            <i class="fas fa-arrow-left"></i> Browse All News
-                        </a>
-                    @else
-                        <p class="text-muted">Check back later for the latest updates.</p>
-                    @endif
-                </div>
-            @endif
+            <a href="{{ route('news.index') }}" class="breadcrumb-item f1-s-3 cl9">
+                News 
+            </a>
         </div>
 
-        <!-- Sidebar -->
-        <div class="col-lg-3">
-            <!-- Categories Filter -->
-            <div class="card mb-4">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">
-                        <i class="fas fa-filter"></i> Filter by Category
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <div class="list-group list-group-flush">
-                        <a href="{{ route('news.index') }}" 
-                           class="list-group-item list-group-item-action {{ !request('category') ? 'active' : '' }}">
-                            All Categories
-                        </a>
-                        @foreach($categories as $category)
-                            <a href="{{ route('news.index', ['category' => $category->slug]) }}" 
-                               class="list-group-item list-group-item-action {{ request('category') === $category->slug ? 'active' : '' }}">
-                                {{ $category->name }}
-                                <span class="badge bg-secondary float-end">{{ $category->published_news_count }}</span>
-                            </a>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sidebar Ads -->
-            @if(isset($sidebarAds) && $sidebarAds->count() > 0)
-                <div class="mb-4">
-                    @foreach($sidebarAds as $ad)
-                        <div class="ad-banner mb-3">
-                            <a href="{{ $ad->link_url }}" target="_blank">
-                                <img src="{{ asset('storage/' . $ad->image_url) }}" 
-                                     alt="{{ $ad->title }}" 
-                                     class="img-fluid">
-                            </a>
-                        </div>
-                    @endforeach
-                </div>
-            @endif
-
-            <!-- Most Viewed -->
-            @if($mostViewedNews->count() > 0)
-                <div class="card">
-                    <div class="card-header bg-warning text-white">
-                        <h5 class="mb-0">
-                            <i class="fas fa-fire"></i> Most Viewed
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        @foreach($mostViewedNews as $index => $article)
-                            <div class="sidebar-news">
-                                <h6>
-                                    <span class="badge bg-secondary me-2">{{ $index + 1 }}</span>
-                                    <a href="{{ route('news.show', $article->slug) }}" class="text-decoration-none">
-                                        {{ Str::limit($article->title, 50) }}
-                                    </a>
-                                </h6>
-                                <small class="text-muted">
-                                    <i class="fas fa-eye"></i> {{ number_format($article->views) }} views
-                                </small>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            @endif
+        <div class="pos-relative size-a-2 bo-1-rad-22 of-hidden bocl11 m-tb-6">
+            <input class="f1-s-1 cl6 plh9 s-full p-l-25 p-r-45" type="text" name="search" placeholder="Search">
+            <button class="flex-c-c size-a-1 ab-t-r fs-20 cl2 hov-cl10 trans-03">
+                <i class="zmdi zmdi-search"></i>
+            </button>
         </div>
     </div>
 </div>
+
+<section class="bg0 p-b-55">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8 p-b-80">
+                {{-- ANCHOR: Menampilkan hasil filter dan tombol clear filter --}}
+                @php
+                    $resultText = '';
+                    $hasFilter = false;
+                    if(request('search')) {
+                        $resultText = 'Search results for "' . e(request('search')) . '"';
+                        $hasFilter = true;
+                    } elseif(isset($tag)) {
+                        $resultText = 'News with tag "' . e($tag->name) . '"';
+                        $hasFilter = true;
+                    } elseif(request('category')) {
+                        $categoryName = $categories->where('slug', request('category'))->first()?->name ?? 'Category';
+                        $resultText = 'News in category "' . e($categoryName) . '"';
+                        $hasFilter = true;
+                    }
+                @endphp
+                @if($hasFilter)
+                    <div class="mb-4 d-flex align-items-center flex-wrap gap-2">
+                        <span class="badge badge-pill badge-primary px-3 py-2" style="font-size:1rem;">
+                            {{ $news->total() }} results
+                            @if($resultText)
+                                &mdash; {{ $resultText }}
+                            @endif
+                        </span>
+                        <a href="{{ route('news.index') }}" class="btn btn-sm btn-outline-secondary ml-2">
+                            Clear Filter
+                        </a>
+                    </div>
+                @endif
+
+                @if($news->count() > 0)
+                    <div class="row">
+                        @foreach($news as $item)
+                            <div class="col-sm-6 p-r-25 p-r-15-sr991">
+                                <!-- Item latest -->	
+                                <div class="m-b-45">
+                                    <a href="{{ route('news.show', $item->slug) }}" class="wrap-pic-w hov1 trans-03">
+                                        @if($item->thumbnail)
+                                            <img src="{{ asset('storage/' . $item->thumbnail) }}" alt="{{ $item->title }}">
+                                        @else
+                                            <img src="https://placehold.co/100x100/E8E8E8/A7A6A6.png?text=News" alt="{{ $item->title }}">
+                                        @endif
+                                    </a>
+
+                                    <div class="p-t-16">
+                                        <h5 class="p-b-5">
+                                            <a href="{{ route('news.show', $item->slug) }}" class="f1-m-3 cl2 hov-cl10 trans-03">
+                                                {{ $item->title }}
+                                            </a>
+                                        </h5>
+
+                                        <span class="cl8">
+                                            @if($item->category)
+                                                <a href="{{ route('news.index', ['category' => $item->category->slug]) }}" class="f1-s-4 cl8 hov-cl10 trans-03">
+                                                    {{ $item->category->name }}
+                                                </a>
+                                            @endif
+
+                                            <span class="f1-s-3 m-rl-3">
+                                                -
+                                            </span>
+
+                                            <span class="f1-s-3">
+                                                {{ $item->created_at->format('M d') }}
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <!-- Pagination -->
+                    @if($news->hasPages())
+                        <div class="flex-wr-s-c m-rl--7 p-t-15">
+                            {{ $news->appends(request()->query())->links('vendor.pagination.custom') }}
+                        </div>
+                    @endif
+                @else
+                    <div class="text-center p-t-50">
+                        <h3 class="f1-m-2 cl3">No news found</h3>
+                        <p class="f1-s-1 cl6">Try adjusting your search criteria or browse all news.</p>
+                        <a href="{{ route('news.index') }}" class="btn btn-primary m-t-20">Browse All News</a>
+                    </div>
+                @endif
+            </div>
+
+            <div class="col-md-10 col-lg-4 p-b-80">
+                <div class="p-l-10 p-rl-0-sr991">							                    
+                    <!-- Categories -->
+                    @if($categories->count() > 0)
+                        <div class="m-b-50">
+                            <div class="how2 how2-cl4 flex-s-c m-b-20">
+                                <h3 class="f1-m-2 cl3 tab01-title">
+                                    Categories
+                                </h3>
+                            </div>
+
+                            <div class="flex-wr-s-s m-rl--5">
+                                 @foreach($categories as $category)
+                                    <a href="{{ route('news.index', ['category' => $category->slug]) }}" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
+                                        {{ $category->name }} ({{ $category->published_news_count ?? 0 }})
+                                    </a>
+                                 @endforeach
+                             </div>	
+                        </div>
+                    @endif
+
+                    <!-- Tag -->
+                    @if($tags->count() > 0)
+                        <div>
+                            <div class="how2 how2-cl4 flex-s-c m-b-20">
+                            <h3 class="f1-m-2 cl3 tab01-title">
+                                Tags
+                            </h3>
+                        </div>
+                        <div class="flex-wr-s-s m-rl--5">
+                            @foreach($tags as $tag)
+                                <a href="{{ route('news.index', ['tag' => $tag->slug]) }}" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
+                                    {{ $tag->name }} ({{ $tag->published_news_count ?? 0 }})
+                                </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 @endsection 

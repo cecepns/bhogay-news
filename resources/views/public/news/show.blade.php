@@ -5,164 +5,124 @@
 
 @section('content')
 <div class="container">
-    <!-- Content Top Ads -->
-    @if(isset($contentAds) && $contentAds->count() > 0)
-        <div class="ad-banner mb-4">
-            @foreach($contentAds as $ad)
-                <a href="{{ $ad->link_url }}" target="_blank">
-                    <img src="{{ asset('storage/' . $ad->image_url) }}" 
-                         alt="{{ $ad->title }}" 
-                         class="img-fluid">
-                </a>
-            @endforeach
-        </div>
-    @endif
+    <div class="headline bg0 flex-wr-sb-c p-rl-20 p-tb-8">
+        <div class="f2-s-1 p-r-30 m-tb-6">
+            <a href="{{ route('home') }}" class="breadcrumb-item f1-s-3 cl9">
+                Home 
+            </a>
 
-    <div class="row">
-        <!-- Main Content -->
-        <div class="col-lg-9">
-            <article class="card">
-                <div class="card-body">
-                    <!-- Article Header -->
-                    <div class="mb-4">
-                        <div class="mb-3">
-                            <a href="{{ route('news.index', ['category' => $news->category->slug]) }}" class="category-badge">
-                                {{ $news->category->name }}
-                            </a>
+            <a href="{{ route('news.index') }}" class="breadcrumb-item f1-s-3 cl9">
+                News 
+            </a>
+
+            <span class="breadcrumb-item f1-s-3 cl9">
+                {{ $news->title }}
+            </span>
+        </div>
+
+        <div class="pos-relative size-a-2 bo-1-rad-22 of-hidden bocl11 m-tb-6">
+            <input class="f1-s-1 cl6 plh9 s-full p-l-25 p-r-45" type="text" name="search" placeholder="Search">
+            <button class="flex-c-c size-a-1 ab-t-r fs-20 cl2 hov-cl10 trans-03">
+                <i class="zmdi zmdi-search"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<section class="bg0 p-b-70 p-t-5">
+    <!-- Title -->
+    <div class="bg-img1 size-a-18 how-overlay1" style="background-image: url({{ $news->thumbnail ?? 'https://placehold.co/600x400/E8E8E8/A7A6A6.png?text=Post+Thumbnail' }});">
+        <div class="container h-full flex-col-e-c p-b-58">
+            <a href="{{ route('news.index', ['category' => $news->category->slug]) }}" class="f1-s-10 cl0 hov-cl10 trans-03 text-uppercase txt-center m-b-33">
+                {{ $news->category->name }}
+            </a>
+
+            <h3 class="f1-l-5 cl0 p-b-16 txt-center respon2">
+                {{ $news->title }}
+            </h3>
+
+            <div class="flex-wr-c-s">
+                <span class="f1-s-3 cl8 m-rl-7 txt-center">
+                    <span>
+                        {{ $news->updated_at->format('M d') }}
+                    </span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail -->
+    <div class="container p-t-82">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8 p-b-100">
+                <div class="p-r-10 p-r-0-sr991">
+                    <!-- Blog Detail -->
+                    <div class="p-b-70">
+                        <div class="f1-s-11 cl6 p-b-25">
+                            {!! $news->content !!}
                         </div>
-                        
-                        <h1 class="mb-3">{{ $news->title }}</h1>
-                        
-                        <div class="news-meta border-bottom pb-3 mb-4">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <small class="text-muted">
-                                        <i class="fas fa-calendar"></i> Published on {{ $news->created_at->format('F d, Y') }}
-                                        <i class="fas fa-clock ms-3"></i> {{ $news->created_at->format('h:i A') }}
-                                    </small>
-                                </div>
-                                <div class="col-md-4 text-md-end">
-                                    <small class="text-muted">
-                                        <i class="fas fa-eye"></i> {{ number_format($news->views) }} views
-                                    </small>
-                                </div>
+
+                        @if($news->tags->count() > 0)
+                        <!-- Tag -->
+                        <div class="flex-s-s p-t-12 p-b-15">
+                            <span class="f1-s-12 cl5 m-r-8">
+                                Tags:
+                            </span>
+                            
+                            <div class="flex-wr-s-s size-w-0">
+                                @foreach($news->tags as $tag)
+                                <a href="{{ route('news.byTag', $tag->slug) }}" class="f1-s-12 cl8 hov-link1 m-r-15">
+                                    {{ $tag->name }}
+                                </a>
+                                @endforeach
                             </div>
                         </div>
+                        @endif
                     </div>
+                </div>
+            </div>
+            
+            <div class="col-md-10 col-lg-4 p-b-100">
+                <div class="p-l-10 p-rl-0-sr991">
 
-                    <!-- Featured Image -->
-                    @if($news->thumbnail)
-                        <div class="mb-4">
-                            <img src="{{ asset('storage/' . $news->thumbnail) }}" 
-                                 alt="{{ $news->title }}" 
-                                 class="img-fluid rounded">
+                    @if(isset($banner468x60[0]))
+                        <div class="p-b-50">
+                            <a href="{{ $banner468x60[0]->link_url }}" target="_blank" rel="noopener noreferrer">
+                                <img src="{{ asset('storage/' . $banner468x60[0]->image_url) }}" alt="{{ $banner468x60[0]->title }}" width="100%">
+                            </a>
                         </div>
                     @endif
 
-                    <!-- Article Content -->
-                    <div id="news-content-wrapper" class="news-content">
-                        {!! $news->content !!}
-                    </div>
+                    <div class="p-b-50">
+                        <h4 class="f1-l-4 cl3 p-b-12">
+                            Most Viewed
+                        </h4>
 
-                    <!-- Share Buttons -->
-                    <div class="border-top pt-4 mt-4">
-                        <h6>Share this article:</h6>
-                        <div class="d-flex gap-2">
-                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->fullUrl()) }}" 
-                               target="_blank" class="btn btn-outline-primary btn-sm">
-                                <i class="fab fa-facebook-f"></i> Facebook
+                        @foreach($mostViewedNews ?? [] as $popular)
+                        <div class="flex-wr-sb-s p-b-20">
+                            <a href="{{ route('news.show', $popular->slug) }}" class="size-w-1 wrap-pic-w">
+                                <img src="{{ $popular->thumbnail ?? 'https://placehold.co/100x100/E8E8E8/A7A6A6.png?text=News' }}" alt="{{ $popular->title }}">
                             </a>
-                            <a href="https://twitter.com/intent/tweet?url={{ urlencode(request()->fullUrl()) }}&text={{ urlencode($news->title) }}" 
-                               target="_blank" class="btn btn-outline-info btn-sm">
-                                <i class="fab fa-twitter"></i> Twitter
-                            </a>
-                            <a href="https://wa.me/?text={{ urlencode($news->title . ' ' . request()->fullUrl()) }}" 
-                               target="_blank" class="btn btn-outline-success btn-sm">
-                                <i class="fab fa-whatsapp"></i> WhatsApp
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </article>
 
-            <!-- Related Articles -->
-            @if($relatedNews->count() > 0)
-                <div class="mt-5">
-                    <h3 class="border-bottom border-primary pb-2 mb-4">
-                        Related Articles
-                    </h3>
-                    <div class="row">
-                        @foreach($relatedNews as $related)
-                            <div class="col-md-6 mb-4">
-                                <div class="card news-card h-100 position-relative">
-                                    <a href="{{ route('news.show', $related->slug) }}" class="text-decoration-none text-dark stretched-link">
-                                        <img src="{{ $related->thumbnail ? asset('storage/' . $related->thumbnail) : 'https://placehold.co/300x200?text=News+Image' }}" 
-                                             class="card-img-top news-thumbnail" alt="{{ $related->title }}">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                {{ $related->title }}
-                                            </h5>
-                                            <p class="card-text">{{ Str::limit(strip_tags($related->content), 120) }}</p>
-                                            <div class="news-meta">
-                                                <small>
-                                                    <i class="fas fa-calendar"></i> {{ $related->created_at->format('M d, Y') }}
-                                                    <i class="fas fa-eye ms-2"></i> {{ number_format($related->views) }} views
-                                                </small>
-                                            </div>
-                                        </div>
+                            <div class="size-w-2">
+                                <h5 class="p-b-5">
+                                    <a href="{{ route('news.show', $popular->slug) }}" class="f1-s-5 cl3 hov-cl10 trans-03">
+                                        {{ $popular->title }}
                                     </a>
-                                </div>
+                                </h5>
+
+                                <span class="cl8">
+                                    <span class="f1-s-6 cl8">
+                                        {{ $popular->updated_at->format('M d, Y') }}
+                                    </span>
+                                </span>
                             </div>
+                        </div>
                         @endforeach
                     </div>
-                </div>
-            @endif
-        </div>
-
-        <!-- Sidebar -->
-        <div class="col-lg-3">
-            <!-- Sidebar Ads -->
-            @if(isset($sidebarAds) && $sidebarAds->count() > 0)
-                <div class="mb-4">
-                    @foreach($sidebarAds as $ad)
-                        <div class="ad-banner mb-3">
-                            <a href="{{ $ad->link_url }}" target="_blank">
-                                <img src="{{ asset('storage/' . $ad->image_url) }}" 
-                                     alt="{{ $ad->title }}" 
-                                     class="img-fluid">
-                            </a>
-                        </div>
-                    @endforeach
-                </div>
-            @endif
-
-            <!-- Latest News -->
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">
-                        <i class="fas fa-clock"></i> Latest News
-                    </h5>
-                </div>
-                <div class="card-body">
-                    @php
-                        $latestNews = App\Models\News::published()->with('category')->latest()->take(5)->get();
-                    @endphp
-                    
-                    @foreach($latestNews as $latest)
-                        <div class="sidebar-news">
-                            <h6>
-                                <a href="{{ route('news.show', $latest->slug) }}" class="text-decoration-none">
-                                    {{ Str::limit($latest->title, 60) }}
-                                </a>
-                            </h6>
-                            <small class="text-muted">
-                                {{ $latest->created_at->diffForHumans() }}
-                            </small>
-                        </div>
-                    @endforeach
                 </div>
             </div>
         </div>
     </div>
-</div>
+	</section>
 @endsection 

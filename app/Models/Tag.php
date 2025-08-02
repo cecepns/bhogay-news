@@ -28,6 +28,14 @@ class Tag extends Model
     }
 
     /**
+     * Get the published news that belongs to the tag.
+     */
+    public function publishedNews(): BelongsToMany
+    {
+        return $this->belongsToMany(News::class)->where('status', 'published');
+    }
+
+    /**
      * Get the route key for the model.
      */
     public function getRouteKeyName(): string
@@ -61,5 +69,13 @@ class Tag extends Model
     public function getNewsCountAttribute(): int
     {
         return $this->news()->count();
+    }
+
+    /**
+     * Get the count of published news for this tag.
+     */
+    public function getPublishedNewsCountAttribute(): int
+    {
+        return $this->publishedNews()->count();
     }
 }

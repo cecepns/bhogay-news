@@ -36,10 +36,20 @@ class NewsController extends Controller
             });
         }
 
+        // Handle tag filter
+        if ($request->has('tag') && $request->tag) {
+            $query->whereHas('tags', function($q) use ($request) {
+                $q->where('slug', $request->tag);
+            });
+        }
+
         $news = $query->paginate(12);
 
         // Get categories for filter
         $categories = Category::withCount('publishedNews')->get();
+
+        // Get tags for filter
+        $tags = Tag::withCount('publishedNews')->get();
         
         // Get sidebar ads
         $sidebarAds = Ad::active()->get();
@@ -54,6 +64,7 @@ class NewsController extends Controller
         return view('public.news.index', compact(
             'news',
             'categories',
+            'tags',
             'sidebarAds',
             'mostViewedNews'
         ));
@@ -65,7 +76,7 @@ class NewsController extends Controller
     public function show(Request $request, string $slug): View
     {
         $news = News::published()
-            ->with(['category', 'pageViews'])
+            ->with(['category', 'pageViews', 'tags'])
             ->where('slug', $slug)
             ->firstOrFail();
 
@@ -82,17 +93,21 @@ class NewsController extends Controller
             ->take(4)
             ->get();
 
-        // Get sidebar ads
-        $sidebarAds = Ad::active()->get();
-        
-        // Get content ads
-        $contentAds = Ad::active()->get();
+        // Get most viewed news for sidebar
+        $mostViewedNews = News::published()
+            ->with('category')
+            ->mostViewed()
+            ->where('id', '!=', $news->id)
+            ->take(5)
+            ->get();
+
+        $banner468x60 = Ad::active()->where('size', '468x60')->get();
 
         return view('public.news.show', compact(
             'news',
             'relatedNews',
-            'sidebarAds',
-            'contentAds'
+            'mostViewedNews',
+            'banner468x60'
         ));
     }
 
