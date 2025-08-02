@@ -85,14 +85,6 @@
             <div class="col-md-10 col-lg-4 p-b-100">
                 <div class="p-l-10 p-rl-0-sr991">
 
-                    @if(isset($banner468x60[0]))
-                        <div class="p-b-50">
-                            <a href="{{ $banner468x60[0]->link_url }}" target="_blank" rel="noopener noreferrer">
-                                <img src="{{ asset('storage/' . $banner468x60[0]->image_url) }}" alt="{{ $banner468x60[0]->title }}" width="100%">
-                            </a>
-                        </div>
-                    @endif
-
                     <div class="p-b-50">
                         <h4 class="f1-l-4 cl3 p-b-12">
                             Most Viewed
@@ -120,6 +112,15 @@
                         </div>
                         @endforeach
                     </div>
+
+                    
+                    @if(isset($banner160x300[0]))
+                        <div>
+                            <a href="{{ $banner160x300[0]->link_url }}" target="_blank" rel="noopener noreferrer">
+                                <img src="{{ asset('storage/' . $banner160x300[0]->image_url) }}" alt="{{ $banner160x300[0]->title }}" width="100%">
+                            </a>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

@@ -30,7 +30,6 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10 col-lg-8 p-b-80">
-                {{-- ANCHOR: Menampilkan hasil filter dan tombol clear filter --}}
                 @php
                     $resultText = '';
                     $hasFilter = false;
@@ -118,7 +117,15 @@
             </div>
 
             <div class="col-md-10 col-lg-4 p-b-80">
-                <div class="p-l-10 p-rl-0-sr991">							                    
+                <div class="p-l-10 p-rl-0-sr991">	
+                    @if(isset($banner468x60[0]))
+                        <div class="p-b-30">
+                            <a href="{{ $banner468x60[0]->link_url }}" target="_blank" rel="noopener noreferrer">
+                                <img src="{{ asset('storage/' . $banner468x60[0]->image_url) }}" alt="{{ $banner468x60[0]->title }}" width="100%">
+                            </a>
+                        </div>
+                    @endif
+                                                                    
                     <!-- Categories -->
                     @if($categories->count() > 0)
                         <div class="m-b-50">

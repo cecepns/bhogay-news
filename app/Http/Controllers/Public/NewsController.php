@@ -51,8 +51,7 @@ class NewsController extends Controller
         // Get tags for filter
         $tags = Tag::withCount('publishedNews')->get();
         
-        // Get sidebar ads
-        $sidebarAds = Ad::active()->get();
+        $banner468x60 = Ad::active()->where('size', '468x60')->get();
         
         // Get most viewed news for sidebar
         $mostViewedNews = News::published()
@@ -65,7 +64,7 @@ class NewsController extends Controller
             'news',
             'categories',
             'tags',
-            'sidebarAds',
+            'banner468x60',
             'mostViewedNews'
         ));
     }
@@ -101,13 +100,13 @@ class NewsController extends Controller
             ->take(5)
             ->get();
 
-        $banner468x60 = Ad::active()->where('size', '468x60')->get();
+        $banner160x300 = Ad::active()->where('size', '160x300')->get();
 
         return view('public.news.show', compact(
             'news',
             'relatedNews',
             'mostViewedNews',
-            'banner468x60'
+            'banner160x300'
         ));
     }
 
