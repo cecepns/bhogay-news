@@ -38,7 +38,7 @@
 
 <section class="bg0 p-b-70 p-t-5">
     <!-- Title -->
-    <div class="bg-img1 size-a-18 how-overlay1" style="background-image: url({{ $news->thumbnail ?? 'https://placehold.co/600x400/E8E8E8/A7A6A6.png?text=Post+Thumbnail' }});">
+    <div class="bg-img1 size-a-18 how-overlay1" style="background-image: url({{ $news->thumbnail ? asset('storage/' . $news->thumbnail) : 'https://placehold.co/600x400/E8E8E8/A7A6A6.png?text=Post+Thumbnail' }});">
         <div class="container h-full flex-col-e-c p-b-58">
             <a href="{{ route('news.index', ['category' => $news->category->slug]) }}" class="f1-s-10 cl0 hov-cl10 trans-03 text-uppercase txt-center m-b-33">
                 {{ $news->category->name }}
@@ -100,7 +100,7 @@
                         @foreach($mostViewedNews ?? [] as $popular)
                         <div class="flex-wr-sb-s p-b-20">
                             <a href="{{ route('news.show', $popular->slug) }}" class="size-w-1 wrap-pic-w">
-                                <img src="{{ $popular->thumbnail ?? 'https://placehold.co/100x100/E8E8E8/A7A6A6.png?text=News' }}" alt="{{ $popular->title }}">
+                                <img src="{{ $popular->thumbnail ? asset('storage/' . $popular->thumbnail) : 'https://placehold.co/100x100/E8E8E8/A7A6A6.png?text=News' }}" alt="{{ $popular->title }}">
                             </a>
 
                             <div class="size-w-2">
