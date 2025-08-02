@@ -3,6 +3,37 @@
 @section('title', $news->title . ' - News Portal')
 @section('description', Str::limit(strip_tags($news->content), 160))
 
+@section('meta-tags')
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="{{ $news->title }}" />
+    <meta property="og:description" content="{{ Str::limit(strip_tags($news->content), 160) }}" />
+    <meta property="og:image" content="{{ $news->thumbnail ? asset('storage/' . $news->thumbnail) : asset('images/logo.png') }}" />
+    <meta property="og:url" content="{{ url()->current() }}" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="{{ config('app.name', 'News Portal') }}" />
+    <meta property="article:published_time" content="{{ $news->created_at->toISOString() }}" />
+    <meta property="article:modified_time" content="{{ $news->updated_at->toISOString() }}" />
+    <meta property="article:author" content="{{ config('app.name', 'News Portal') }}" />
+    @if($news->category)
+    <meta property="article:section" content="{{ $news->category->name }}" />
+    @endif
+    @foreach($news->tags as $tag)
+    <meta property="article:tag" content="{{ $tag->name }}" />
+    @endforeach
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{ $news->title }}" />
+    <meta name="twitter:description" content="{{ Str::limit(strip_tags($news->content), 160) }}" />
+    <meta name="twitter:image" content="{{ $news->thumbnail ? asset('storage/' . $news->thumbnail) : asset('images/logo.png') }}" />
+    <meta name="twitter:url" content="{{ url()->current() }}" />
+
+    <!-- Additional Meta Tags -->
+    <meta name="description" content="{{ Str::limit(strip_tags($news->content), 160) }}" />
+    <meta name="keywords" content="{{ $news->tags->pluck('name')->implode(', ') }}" />
+    <link rel="canonical" href="{{ url()->current() }}" />
+@endsection
+
 @section('content')
 <div class="container">
     <div class="headline bg0 flex-wr-sb-c p-rl-20 p-tb-8">

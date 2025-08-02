@@ -4,6 +4,23 @@
 	<title>@yield('title', 'News Portal')</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	@yield('meta-tags')
+	
+	@if(!View::hasSection('meta-tags'))
+    <!-- Default Meta Tags -->
+    <meta name="description" content="{{ $siteName ?? 'News Portal' }} is your trusted source for the latest news, insightful articles, and trending stories from around the world." />
+    <meta property="og:title" content="@yield('title', 'News Portal')" />
+    <meta property="og:description" content="{{ $siteName ?? 'News Portal' }} is your trusted source for the latest news, insightful articles, and trending stories from around the world." />
+    <meta property="og:image" content="{{ asset('images/logo.png') }}" />
+    <meta property="og:url" content="{{ url()->current() }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="{{ $siteName ?? 'News Portal' }}" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="@yield('title', 'News Portal')" />
+    <meta name="twitter:description" content="{{ $siteName ?? 'News Portal' }} is your trusted source for the latest news, insightful articles, and trending stories from around the world." />
+    <meta name="twitter:image" content="{{ asset('images/logo.png') }}" />
+    @endif
 <!--===============================================================================================-->	
 	<link rel="icon" type="image/png" href="{{ asset('images/icons/favicon.png') }}"/>
 <!--===============================================================================================-->
