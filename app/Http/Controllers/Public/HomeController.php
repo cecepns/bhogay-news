@@ -49,7 +49,6 @@ class HomeController extends Controller
             ->get();
 
         // Get active ads
-        $banner728x90 = Ad::active()->where('size', '728x90')->get();
         $banner160x300 = Ad::active()->where('size', '160x300')->get();
         $banner468x60 = Ad::active()->where('size', '468x60')->get();
         $banner300x250 = Ad::active()->where('size', '300x250')->get();
@@ -68,7 +67,6 @@ class HomeController extends Controller
             'featuredNews',
             'latestNews', 
             'mostViewedNews',
-            'banner728x90',
             'banner160x300',
             'banner468x60',
             'banner300x250',

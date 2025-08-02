@@ -252,6 +252,15 @@
 						</div>	
 					</div>
 
+					
+					@if(isset($banner300x250[0]))
+						<div class="p-b-55">
+							<a href="{{ $banner300x250[0]->link_url }}" target="_blank" rel="noopener noreferrer">
+								<img src="{{ asset('storage/' . $banner300x250[0]->image_url) }}" alt="{{ $banner300x250[0]->title }}" width="100%">
+							</a>
+						</div>
+					@endif
+
 					<div class="p-b-55">
 						<div class="how2 how2-cl4 flex-s-c m-b-30">
 							<h3 class="f1-m-2 cl3 tab01-title">

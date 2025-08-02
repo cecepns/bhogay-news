@@ -32,9 +32,9 @@
 		<div class="container-menu-desktop">
 			<!-- Header Mobile -->
 			<div class="wrap-header-mobile">
-				<!-- Logo moblie -->		
+				<!-- Logo mobile -->		
 				<div class="logo-mobile">
-					<a href="index.html"><img src="images/logo.png" alt="IMG-LOGO"></a>
+					<a href="{{ route('home') }}"><img src="{{ asset('images/logo.png') }}" alt="IMG-LOGO"></a>
 				</div>
 
 				<!-- Button show menu -->
@@ -52,48 +52,11 @@
 						<a href="index.html">Home</a>
 					</li>
 
-					<li>
-						<a href="category-01.html">News</a>
-					</li>
-
-					<li>
-						<a href="category-02.html">Entertainment </a>
-					</li>
-
-					<li>
-						<a href="category-01.html">Business</a>
-					</li>
-
-					<li>
-						<a href="category-02.html">Travel</a>
-					</li>
-
-					<li>
-						<a href="category-01.html">Life Style</a>
-					</li>
-
-					<li>
-						<a href="category-02.html">Video</a>
-					</li>
-
-					<li>
-						<a href="#">Features</a>
-						<ul class="sub-menu-m">
-							<li><a href="category-01.html">Category Page v1</a></li>
-							<li><a href="category-02.html">Category Page v2</a></li>
-							<li><a href="blog-grid.html">Blog Grid Sidebar</a></li>
-							<li><a href="blog-list-01.html">Blog List Sidebar v1</a></li>
-							<li><a href="blog-list-02.html">Blog List Sidebar v2</a></li>
-							<li><a href="blog-detail-01.html">Blog Detail Sidebar</a></li>
-							<li><a href="blog-detail-02.html">Blog Detail No Sidebar</a></li>
-							<li><a href="about.html">About Us</a></li>
-							<li><a href="contact.html">Contact Us</a></li>
-						</ul>
-
-						<span class="arrow-main-menu-m">
-							<i class="fa fa-angle-right" aria-hidden="true"></i>
-						</span>
-					</li>
+                    @foreach($topFiveCategories as $category)
+                        <li>
+                            <a href="{{ route('news.index', ['category' => $category->slug]) }}">{{ $category->name }}</a>
+                        </li>
+                    @endforeach
 				</ul>
 			</div>
 			
@@ -101,13 +64,16 @@
 			<div class="wrap-logo container">
 				<!-- Logo desktop -->		
 				<div class="logo">
-					<a href="index.html"><img src="images/logo.png" alt="LOGO"></a>
+					<a href="{{ route('home') }}"><img src="{{ asset('images/logo.png') }}" alt="LOGO"></a>
 				</div>	
 
-				<!-- Banner -->
-				<div class="banner-header">
-					<a href="#"><img src="images/banner-01.jpg" alt="IMG"></a>
-				</div>
+                @if($banner728x90[0])
+                    <div class="banner-header">
+                        <a href="{{ $banner728x90[0]->link_url }}" target="_blank" rel="noopener noreferrer">
+                            <img src="{{ asset('storage/' . $banner728x90[0]->image_url) }}" alt="{{ $banner728x90[0]->title }}" class="banner-ad">
+                        </a>
+                    </div>
+                @endif
 			</div>	
 			
 			<!--  -->
@@ -115,8 +81,8 @@
 				<div class="main-nav">
 					<!-- Menu desktop -->
 					<nav class="menu-desktop">
-						<a class="logo-stick" href="index.html">
-							<img src="images/logo.png" alt="LOGO">
+						<a class="logo-stick" href="{{ route('home') }}">
+							<img src="{{ asset('images/logo.png') }}" alt="LOGO">
 						</a>
 
 						<ul class="main-menu">
@@ -155,6 +121,14 @@
 								{{ $siteName }} is your trusted source for the latest news, insightful articles, and trending stories from around the world. Stay informed with our up-to-date coverage and in-depth analysis on topics that matter to you.
 							</p>
 						</div>
+
+                        @if($banner320x50[0])
+                            <div >
+                                <a href="{{ $banner320x50[0]->link_url }}" target="_blank" rel="noopener noreferrer">
+                                    <img src="{{ asset('storage/' . $banner320x50[0]->image_url) }}" alt="{{ $banner320x50[0]->title }}" class="banner-ad">
+                                </a>
+                            </div>
+                        @endif
 					</div>
 
 					<div class="col-sm-6 col-lg-4 p-b-20">

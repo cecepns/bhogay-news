@@ -51,7 +51,10 @@ class AdSeeder extends Seeder
         ];
 
         foreach ($ads as $ad) {
-            Ad::create($ad);
+            Ad::updateOrCreate(
+                ['size' => $ad['size']],
+                $ad
+            );
         }
     }
 }
