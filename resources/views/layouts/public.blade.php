@@ -69,16 +69,7 @@
 				</div>	
 
 				<div class="banner-header">
-					<script type="text/javascript">
-						atOptions = {
-							'key' : 'e1ec5083f8c41ac8084fd2965303cd7b',
-							'format' : 'iframe',
-							'height' : 90,
-							'width' : 728,
-							'params' : {}
-						};
-					</script>
-					<script type="text/javascript" src="//www.highperformanceformat.com/e1ec5083f8c41ac8084fd2965303cd7b/invoke.js"></script>
+					@include('components.advertisement', ['size' => '728x90'])
 				</div>
 			</div>	
 			
@@ -207,6 +198,10 @@
 				<span class="f1-s-1 cl0 txt-center">
 					Copyright © {{ $currentYear }} {{ $siteName }}. All rights reserved.
 				</span>
+			</div>
+			
+			<div class="flex-c-c p-tb-20">
+				@include('components.advertisement', ['size' => '320x50'])
 			</div>
 		</div>
 	</footer>

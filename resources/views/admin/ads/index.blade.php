@@ -15,7 +15,7 @@
                         <thead>
                             <tr>
                                 <th>Title</th>
-                                <th>Image</th>
+                                <th>Script</th>
                                 <th>Size</th>
                                 <th>Status</th>
                                 <th>Created</th>
@@ -28,23 +28,16 @@
                                     <td>
                                         <div>
                                             <h6 class="mb-0">{{ Str::limit($ad->title, 50) }}</h6>
-                                            @if($ad->link_url)
-                                                <small class="text-muted">
-                                                    <i class="fas fa-link"></i> {{ Str::limit($ad->link_url, 30) }}
-                                                </small>
-                                            @endif
                                         </div>
                                     </td>
                                     <td>
-                                        @if($ad->image_url)
-                                            <img src="{{ asset('storage/' . $ad->image_url) }}" 
-                                                 alt="{{ $ad->title }}" 
-                                                 class="img-thumbnail" 
-                                                 style="width: 80px; height: 60px; object-fit: cover;">
+                                        @if($ad->script)
+                                            <div class="text-muted">
+                                                <small>{{ Str::limit($ad->script, 100) }}</small>
+                                            </div>
                                         @else
-                                            <div class="bg-light d-flex align-items-center justify-content-center" 
-                                                 style="width: 80px; height: 60px; border-radius: 5px;">
-                                                <i class="fas fa-image text-muted"></i>
+                                            <div class="text-muted">
+                                                <small><em>No script available</em></small>
                                             </div>
                                         @endif
                                     </td>

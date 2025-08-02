@@ -25,36 +25,14 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="image" class="form-label">Advertisement Image</label>
-                            <input type="file" class="form-control @error('image') is-invalid @enderror" 
-                                   id="image" name="image" accept="image/*">
-                            @error('image')
+                            <label for="script" class="form-label">Advertisement Script</label>
+                            <textarea class="form-control @error('script') is-invalid @enderror" 
+                                      id="script" name="script" rows="8" 
+                                      placeholder="Paste your advertisement script here...">{{ old('script', $ad->script) }}</textarea>
+                            @error('script')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                            <div class="form-text">Leave empty to keep the current image. Supported formats: JPEG, PNG, JPG, GIF. Max size: 2MB</div>
-                            
-                            @if($ad->image_url)
-                                <div class="mt-2">
-                                    <label class="form-label">Current Image:</label>
-                                    <div>
-                                        <img src="{{ asset('storage/' . $ad->image_url) }}" 
-                                             alt="{{ $ad->title }}" 
-                                             class="img-thumbnail" 
-                                             style="max-width: 200px; max-height: 150px;">
-                                    </div>
-                                </div>
-                            @endif
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="link_url" class="form-label">Link URL</label>
-                            <input type="url" class="form-control @error('link_url') is-invalid @enderror" 
-                                   id="link_url" name="link_url" value="{{ old('link_url', $ad->link_url) }}" 
-                                   placeholder="https://example.com">
-                            @error('link_url')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                            <div class="form-text">Optional. Where users will be redirected when they click the ad.</div>
+                            <div class="form-text">Paste the complete advertisement script including any configuration options. Leave empty if no script available.</div>
                         </div>
 
 
@@ -117,12 +95,14 @@
                         <span class="badge bg-info">{{ $ad->size }}</span>
                     </div>
 
-                    @if($ad->link_url)
-                        <div class="mb-3">
-                            <strong>Link URL:</strong><br>
-                            <small class="text-muted">{{ $ad->link_url }}</small>
-                        </div>
-                    @endif
+                    <div class="mb-3">
+                        <strong>Script Length:</strong><br>
+                        @if($ad->script)
+                            <small class="text-muted">{{ strlen($ad->script) }} characters</small>
+                        @else
+                            <small class="text-muted"><em>No script available</em></small>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>

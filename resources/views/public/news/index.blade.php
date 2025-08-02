@@ -124,13 +124,9 @@
 
             <div class="col-md-10 col-lg-4 p-b-80">
                 <div class="p-l-10 p-rl-0-sr991">	
-                    @if(isset($banner468x60[0]) && !empty($banner468x60[0]->image_url))
-                        <div class="p-b-30">
-                            <a href="{{ $banner468x60[0]->link_url }}" target="_blank" rel="noopener noreferrer">
-                                <img src="{{ asset('storage/' . $banner468x60[0]->image_url) }}" alt="{{ $banner468x60[0]->title }}" width="100%">
-                            </a>
-                        </div>
-                    @endif
+                    <div class="p-b-30">
+                        @include('components.advertisement', ['size' => '468x60'])
+                    </div>
                                                                     
                     <!-- Categories -->
                     @if($categories->count() > 0)

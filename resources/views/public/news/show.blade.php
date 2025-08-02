@@ -121,13 +121,9 @@
                     </div>
 
                     
-                    @if(isset($banner160x300[0]) && !empty($banner160x300[0]->image_url))
-                        <div>
-                            <a href="{{ $banner160x300[0]->link_url }}" target="_blank" rel="noopener noreferrer">
-                                <img src="{{ asset('storage/' . $banner160x300[0]->image_url) }}" alt="{{ $banner160x300[0]->title }}" width="100%">
-                            </a>
-                        </div>
-                    @endif
+                    <div>
+                        @include('components.advertisement', ['size' => '160x300'])
+                    </div>
                 </div>
             </div>
         </div>

@@ -12,8 +12,7 @@ class Ad extends Model
      */
     protected $fillable = [
         'title',
-        'image_url',
-        'link_url',
+        'script',
         'size',
         'is_active',
     ];
@@ -39,5 +38,21 @@ class Ad extends Model
     public function scopeBySize(Builder $query, string $size): void
     {
         $query->where('size', $size);
+    }
+
+    /**
+     * Get the advertisement script for display.
+     */
+    public function getScriptForDisplay(): ?string
+    {
+        return $this->script;
+    }
+
+    /**
+     * Get active advertisement by size.
+     */
+    public static function getActiveBySize(string $size): ?self
+    {
+        return static::active()->bySize($size)->first();
     }
 }

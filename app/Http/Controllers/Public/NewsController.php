@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\News;
 use App\Models\Category;
 use App\Models\Tag;
-use App\Models\Ad;
 use App\Models\PageView;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -51,8 +50,6 @@ class NewsController extends Controller
         // Get tags for filter
         $tags = Tag::withCount('publishedNews')->get();
         
-        $banner468x60 = Ad::active()->where('size', '468x60')->get();
-        
         // Get most viewed news for sidebar
         $mostViewedNews = News::published()
             ->with('category')
@@ -64,7 +61,6 @@ class NewsController extends Controller
             'news',
             'categories',
             'tags',
-            'banner468x60',
             'mostViewedNews'
         ));
     }
@@ -100,13 +96,10 @@ class NewsController extends Controller
             ->take(5)
             ->get();
 
-        $banner160x300 = Ad::active()->where('size', '160x300')->get();
-
         return view('public.news.show', compact(
             'news',
             'relatedNews',
-            'mostViewedNews',
-            'banner160x300'
+            'mostViewedNews'
         ));
     }
 
