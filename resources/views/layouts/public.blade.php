@@ -77,8 +77,12 @@
 							'width' : 728,
 							'params' : {}
 						};
+						console.log('Ad script loaded:', atOptions);
 					</script>
 					<script type="text/javascript" src="//www.highperformanceformat.com/e1ec5083f8c41ac8084fd2965303cd7b/invoke.js"></script>
+					<div id="ad-debug" style="border: 1px solid red; height: 90px; width: 728px; text-align: center; line-height: 90px;">
+						Ad placeholder - Check if this shows
+					</div>
 				</div>
 			</div>	
 			
