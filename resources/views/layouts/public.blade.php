@@ -119,13 +119,9 @@
 							</p>
 						</div>
 
-                        @if($banner320x50[0])
                             <div >
-                                <a href="{{ $banner320x50[0]->link_url }}" target="_blank" rel="noopener noreferrer">
-                                    <img src="{{ asset('storage/' . $banner320x50[0]->image_url) }}" alt="{{ $banner320x50[0]->title }}" class="banner-ad">
-                                </a>
+							@include('components.advertisement', ['size' => '320x50'])
                             </div>
-                        @endif
 					</div>
 
 					<div class="col-sm-6 col-lg-4 p-b-20">
@@ -198,10 +194,6 @@
 				<span class="f1-s-1 cl0 txt-center">
 					Copyright © {{ $currentYear }} {{ $siteName }}. All rights reserved.
 				</span>
-			</div>
-			
-			<div class="flex-c-c p-tb-20">
-				@include('components.advertisement', ['size' => '320x50'])
 			</div>
 		</div>
 	</footer>

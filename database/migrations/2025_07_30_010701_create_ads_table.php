@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('image_url');
             $table->string('link_url')->nullable();
-            $table->enum('size', ['468x60', '160x300', '320x50', '300x250', '160x600', '728x90']);
+            $table->enum('size', ['468x60', '160x600', '320x50', '300x250', '160x600', '728x90']);
             $table->string('position'); // header, sidebar, footer, etc.
             $table->boolean('is_active')->default(true);
             $table->timestamps();
