@@ -118,7 +118,6 @@
                     <div class="text-center p-t-50">
                         <h3 class="f1-m-2 cl3">No news found</h3>
                         <p class="f1-s-1 cl6">Try adjusting your search criteria or browse all news.</p>
-                        <a href="{{ route('news.index') }}" class="btn btn-primary m-t-20">Browse All News</a>
                     </div>
                 @endif
             </div>
