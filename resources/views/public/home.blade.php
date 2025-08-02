@@ -260,7 +260,7 @@
 					</div>
 
 					
-					@if(isset($banner300x250[0]))
+					@if(isset($banner300x250[0]) && !empty($banner300x250[0]->image_url))
 						<div class="p-b-55">
 							<a href="{{ $banner300x250[0]->link_url }}" target="_blank" rel="noopener noreferrer">
 								<img src="{{ asset('storage/' . $banner300x250[0]->image_url) }}" alt="{{ $banner300x250[0]->title }}" width="100%">

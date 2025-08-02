@@ -68,7 +68,7 @@
 					<a href="{{ route('home') }}"><img src="{{ asset('images/logo.png') }}" alt="LOGO"></a>
 				</div>	
 
-                @if($banner728x90[0])
+                @if($banner728x90[0] && !empty($banner728x90[0]->image_url))
                     <div class="banner-header">
                         <a href="{{ $banner728x90[0]->link_url }}" target="_blank" rel="noopener noreferrer">
                             <img src="{{ asset('storage/' . $banner728x90[0]->image_url) }}" alt="{{ $banner728x90[0]->title }}" class="banner-ad">
@@ -123,7 +123,7 @@
 							</p>
 						</div>
 
-                        @if($banner320x50[0])
+                        @if($banner320x50[0] && !empty($banner320x50[0]->image_url))
                             <div >
                                 <a href="{{ $banner320x50[0]->link_url }}" target="_blank" rel="noopener noreferrer">
                                     <img src="{{ asset('storage/' . $banner320x50[0]->image_url) }}" alt="{{ $banner320x50[0]->title }}" class="banner-ad">
