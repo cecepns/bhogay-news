@@ -46,7 +46,7 @@ class AdSeeder extends Seeder
             [
                 'title' => 'News Sidebar Banner 2',
                 'script' => null,
-                'size' => '160x300',
+                'size' => '160x600',
                 'is_active' => true,
             ],
         ];
