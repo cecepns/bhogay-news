@@ -47,8 +47,8 @@ class NewsController extends Controller
         // Get categories for filter
         $categories = Category::withCount('publishedNews')->get();
 
-        // Get tags for filter
-        $tags = Tag::withCount('publishedNews')->get();
+        // Get 20 random tags for filter
+        $tags = Tag::withCount('publishedNews')->inRandomOrder()->take(20)->get();
         
         // Get most viewed news for sidebar
         $mostViewedNews = News::published()
