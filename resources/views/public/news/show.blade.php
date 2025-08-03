@@ -109,7 +109,7 @@
                             
                             <div class="flex-wr-s-s size-w-0">
                                 @foreach($news->tags as $tag)
-                                <a href="{{ route('news.byTag', $tag->slug) }}" class="f1-s-12 cl8 hov-link1 m-r-15">
+                                <a href="{{ route('news.index', ['tag' => $tag->slug]) }}" class="f1-s-12 cl8 hov-link1 m-r-15">
                                     {{ $tag->name }}
                                 </a>
                                 @endforeach
